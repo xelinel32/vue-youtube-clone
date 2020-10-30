@@ -32,13 +32,11 @@
                   large
                 >
                   <v-card class="card" tile flat>
-                    <v-row no-gutters v-if="history.videoId">
+                    <v-row v-if="history.videoId" no-gutters>
                       <v-col class="mx-auto" cols="3" sm="3" md="5" lg="5">
                         <v-img
                           class="align-center"
-                          :src="
-                            `${getUrl}/uploads/thumbnails/${history.videoId.thumbnailUrl}`
-                          "
+                          :src="`${getUrl}/uploads/thumbnails/${history.videoId.thumbnailUrl}`"
                         >
                         </v-img>
                       </v-col>
@@ -72,7 +70,7 @@
                   </v-card>
                 </v-skeleton-loader>
               </div>
-              <infinite-loading
+              <InfiniteLoading
                 :identifier="infiniteId"
                 @infinite="getHistories"
               >
@@ -100,7 +98,7 @@
                     </v-row>
                   </v-alert>
                 </div>
-              </infinite-loading>
+              </InfiniteLoading>
             </section>
           </template>
           <template v-else>
@@ -139,7 +137,7 @@
                   </v-card>
                 </v-skeleton-loader>
               </div>
-              <infinite-loading
+              <InfiniteLoading
                 :identifier="infiniteId"
                 @infinite="getHistories"
               >
@@ -167,7 +165,7 @@
                     </v-row>
                   </v-alert>
                 </div>
-              </infinite-loading>
+              </InfiniteLoading>
             </div>
           </template>
         </v-col>
@@ -182,23 +180,25 @@
           lg="5"
           :class="[
             'pa-0',
-            { 'fill-height': $vuetify.breakpoint.name.smAndDown ? true : false }
+            {
+              'fill-height': $vuetify.breakpoint.name.smAndDown ? true : false,
+            },
           ]"
         >
           <v-card
-            flat
             id="card-radiobox"
+            flat
             class="fill-height grey lighten-4 pa-10"
           >
             <v-radio-group v-model="historyType">
               <p class="title font-weight-regular pl-5 mb-2">History Type</p>
-              <v-list class=" grey lighten-4">
+              <v-list class="grey lighten-4">
                 <v-list-item-group>
                   <template v-for="(item, i) in items">
                     <v-divider :key="i"></v-divider>
                     <v-list-item
-                      active-class="grey lighten-4"
                       :key="`item-${i}`"
+                      active-class="grey lighten-4"
                       class="py-2"
                       @click="clickItem(item)"
                     >
@@ -227,7 +227,7 @@
     </v-container>
     <v-snackbar v-model="snackbar">
       {{ deleteMessage }}
-      <v-btn color="white" text @click="snackbar = false" icon>
+      <v-btn color="white" text icon @click="snackbar = false">
         <v-icon>mdi-close-circle</v-icon>
       </v-btn>
     </v-snackbar>
@@ -235,115 +235,115 @@
 </template>
 
 <script>
-import moment from 'moment'
-import { mapGetters } from 'vuex'
+  import moment from 'moment'
+  import { mapGetters } from 'vuex'
 
-import HistoryService from '@/services/HistoryService'
-import InfiniteLoading from 'vue-infinite-loading'
+  import HistoryService from '@/services/HistoryService'
+  import InfiniteLoading from 'vue-infinite-loading'
 
-export default {
-  data: () => ({
-    loading: false,
-    loaded: false,
-    errored: false,
-    snackbar: false,
-    deleteMessage: '',
-    items: ['Watch History', 'Search History'],
-    historyType: 'Watch History',
-    histories: [],
-    page: 1,
-    infiniteId: +new Date(),
-    clearLoading: false
-  }),
-  computed: {
-    ...mapGetters(['currentUser', 'getUrl'])
-  },
-  methods: {
-    async getHistories($state) {
-      this.errored = false
-      if (!this.loaded) {
-        this.loading = true
-      }
-
-      const params = {
-        page: this.page,
-        type: this.historyType === 'Watch History' ? 'watch' : 'search'
-      }
-
-      const histories = await HistoryService.getAll(params)
-        .catch((err) => {
-          this.errored = true
-          console.log(err)
-        })
-        .finally(() => {
-          this.loading = false
-        })
-      if (!histories) return
-
-      if (histories.data.data.length) {
-        this.page += 1
-
-        this.histories.push(...histories.data.data)
-        if ($state) {
-          $state.loaded()
+  export default {
+    data: () => ({
+      loading: false,
+      loaded: false,
+      errored: false,
+      snackbar: false,
+      deleteMessage: '',
+      items: ['Watch History', 'Search History'],
+      historyType: 'Watch History',
+      histories: [],
+      page: 1,
+      infiniteId: +new Date(),
+      clearLoading: false,
+    }),
+    computed: {
+      ...mapGetters(['currentUser', 'getUrl']),
+    },
+    mounted() {
+      this.getHistories()
+    },
+    methods: {
+      async getHistories($state) {
+        this.errored = false
+        if (!this.loaded) {
+          this.loading = true
         }
 
-        this.loaded = true
-      } else {
-        if ($state) {
-          $state.complete()
+        const params = {
+          page: this.page,
+          type: this.historyType === 'Watch History' ? 'watch' : 'search',
         }
-      }
-    },
-    async clearHistory() {
-      this.clearLoading = true
 
-      const type = this.historyType === 'Watch History' ? 'watch' : 'search'
+        const histories = await HistoryService.getAll(params)
+          .catch((err) => {
+            this.errored = true
+            console.log(err)
+          })
+          .finally(() => {
+            this.loading = false
+          })
+        if (!histories) return
 
-      await HistoryService.deleteAll(type)
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.histories = this.histories.filter(
-            (history) => history.type !== type
-          )
+        if (histories.data.data.length) {
+          this.page += 1
 
-          this.clearLoading = false
-          this.deleteMessage = `${this.historyType} Cleared Successfully`
-          this.snackbar = true
-        })
+          this.histories.push(...histories.data.data)
+          if ($state) {
+            $state.loaded()
+          }
+
+          this.loaded = true
+        } else {
+          if ($state) {
+            $state.complete()
+          }
+        }
+      },
+      async clearHistory() {
+        this.clearLoading = true
+
+        const type = this.historyType === 'Watch History' ? 'watch' : 'search'
+
+        await HistoryService.deleteAll(type)
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            this.histories = this.histories.filter(
+              (history) => history.type !== type
+            )
+
+            this.clearLoading = false
+            this.deleteMessage = `${this.historyType} Cleared Successfully`
+            this.snackbar = true
+          })
+      },
+      async deleteHistory(id) {
+        this.histories = this.histories.filter(
+          (history) => history._id.toString() !== id.toString()
+        )
+        await HistoryService.deleteById(id)
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            this.deleteMessage = 'History Deleted Successfully'
+            this.snackbar = true
+          })
+      },
+      clickItem(item) {
+        this.historyType = item
+        this.page = 1
+        this.histories = []
+        this.infiniteId += 1
+      },
+      dateFormatter(date) {
+        return moment(date).fromNow()
+      },
     },
-    async deleteHistory(id) {
-      this.histories = this.histories.filter(
-        (history) => history._id.toString() !== id.toString()
-      )
-      await HistoryService.deleteById(id)
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.deleteMessage = 'History Deleted Successfully'
-          this.snackbar = true
-        })
+    components: {
+      InfiniteLoading,
     },
-    clickItem(item) {
-      this.historyType = item
-      this.page = 1
-      this.histories = []
-      this.infiniteId += 1
-    },
-    dateFormatter(date) {
-      return moment(date).fromNow()
-    }
-  },
-  components: {
-    InfiniteLoading
-  },
-  mounted() {
-    this.getHistories()
   }
-}
 </script>
 
 <style lang="scss" scoped></style>

@@ -6,12 +6,12 @@ Vue.use(Vuex)
 
 export default {
   state: {
-    comments: []
+    comments: [],
   },
   getters: {
     getComments: (state) => {
       return state.comments
-    }
+    },
   },
   mutations: {
     setComments(state, comments) {
@@ -21,7 +21,7 @@ export default {
       // console.log('hello', comment)
       state.comments.data.unshift(comment)
       // console.log(state.comments.data)
-    }
+    },
   },
   actions: {
     setComments({ commit }, videoId) {
@@ -36,6 +36,6 @@ export default {
     },
     addComment({ commit }, comment) {
       commit('addComment', comment)
-    }
-  }
+    },
+  },
 }

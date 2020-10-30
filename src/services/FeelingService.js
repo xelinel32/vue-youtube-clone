@@ -11,8 +11,8 @@ export default {
     return Api().get('feelings/videos', {
       params: {
         page,
-        limit: 12
-      }
+        limit: 12,
+      },
     })
-  }
+  },
 }

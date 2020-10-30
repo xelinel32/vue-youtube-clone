@@ -9,5 +9,5 @@ export default {
   },
   deleteById(id) {
     return Api().delete(`comments/${id}`)
-  }
+  },
 }

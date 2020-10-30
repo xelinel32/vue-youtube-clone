@@ -7,12 +7,9 @@
     router
     :to="`/watch/${video._id}`"
   >
-    <v-img
-      :src="`${url}/uploads/thumbnails/${video.thumbnailUrl}`"
-
-    ></v-img>
+    <v-img :src="`${url}/uploads/thumbnails/${video.thumbnailUrl}`"></v-img>
     <v-row no-gutters>
-      <v-col cols="2" v-if="card.type != 'noAvatar'">
+      <v-col v-if="card.type != 'noAvatar'" cols="2">
         <v-list-item class="pl-0 pt-3" router :to="`/channels/${channel._id}`">
           <v-list-item-avatar>
             <v-img
@@ -21,7 +18,7 @@
               :src="`${url}/uploads/avatars/${channel.photoUrl}`"
             ></v-img>
             <v-avatar v-else color="red">
-              <span class="white--text headline ">
+              <span class="white--text headline">
                 {{ channel.channelName.split('')[0].toUpperCase() }}</span
               >
             </v-avatar>
@@ -49,31 +46,31 @@
 </template>
 
 <script>
-import moment from "moment";
-export default {
-  name: "VideoCard",
-  props: {
-    video: {
-      type: Object,
-      required: true,
+  import moment from 'moment'
+  export default {
+    name: 'VideoCard',
+    props: {
+      video: {
+        type: Object,
+        required: true,
+      },
+      channel: {
+        type: Object,
+        required: true,
+      },
+      card: Object,
     },
-    channel: {
-      type: Object,
-      required: true,
+    data() {
+      return {
+        url: process.env.VUE_APP_URL,
+      }
     },
-    card: Object,
-  },
-  data() {
-    return {
-      url: process.env.VUE_APP_URL,
-    };
-  },
-  methods: {
-    dateFormatter(date) {
-      return moment(date).fromNow();
+    methods: {
+      dateFormatter(date) {
+        return moment(date).fromNow()
+      },
     },
-  },
-};
+  }
 </script>
 
 <style></style>

@@ -6,5 +6,5 @@ export default {
   },
   deleteById(id) {
     return Api().delete(`replies/${id}`)
-  }
+  },
 }

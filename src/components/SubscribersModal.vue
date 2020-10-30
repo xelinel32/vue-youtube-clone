@@ -29,9 +29,7 @@
                     v-if="item.subscriberId.photoUrl !== 'no-photo.jpg'"
                   >
                     <img
-                      :src="
-                        `${getUrl}/uploads/avatars/${item.subscriberId.photoUrl}`
-                      "
+                      :src="`${getUrl}/uploads/avatars/${item.subscriberId.photoUrl}`"
                       :alt="`${item.subscriberId.photoUrl} avatar`"
                     />
                   </template>
@@ -65,74 +63,74 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SubscriptionService from '@/services/SubscriptionService'
+  import { mapGetters } from 'vuex'
+  import SubscriptionService from '@/services/SubscriptionService'
 
-export default {
-  name: 'SubscribersModal',
-  props: ['openDialog'],
-  data: function() {
-    return {
-      headers: [
-        {
-          text: 'Channel',
-          align: 'start',
-          value: 'channel'
-        },
-        { text: 'Date Subscribed', value: 'createdAt' },
-        { text: 'Subcriber count', value: 'subscriberId.subscribers' }
-        // { text: 'Actions', value: 'actions', align: 'end', sortable: false }
-      ],
-      subscribers: [],
-      loading: true
-    }
-  },
-  computed: {
-    ...mapGetters(['getUrl']),
-    dialog() {
-      return this.openDialog
-    }
-  },
-  methods: {
-    async getSubscribers() {
-      this.loading = true
-      const subscribers = await SubscriptionService.getSubscribers(0)
-        .catch((err) => console.log(err))
-        .finally(() => {
-          this.loading = false
-        })
-
-      if (!subscribers) return
-      this.subscribers = subscribers.data.data
-
-      // console.log(subscribers)
+  export default {
+    name: 'SubscribersModal',
+    props: ['openDialog'],
+    data: function () {
+      return {
+        headers: [
+          {
+            text: 'Channel',
+            align: 'start',
+            value: 'channel',
+          },
+          { text: 'Date Subscribed', value: 'createdAt' },
+          { text: 'Subcriber count', value: 'subscriberId.subscribers' },
+          // { text: 'Actions', value: 'actions', align: 'end', sortable: false }
+        ],
+        subscribers: [],
+        loading: true,
+      }
     },
-    // initialize() {
-    //   this.subscribers = [
-    //     {
-    //       channelName: 'Brad Traversy',
-    //       avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
-    //       createdAt: 'Apr 20, 2020',
-    //       subscribers: 5
-    //     },
-    //     {
-    //       channelName: 'John Doe',
-    //       avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
-    //       createdAt: 'Apr 20, 2020',
-    //       subscribers: 10
-    //     }
-    //   ]
-    // },
-    subscribe(item) {
-      console.log(item)
+    computed: {
+      ...mapGetters(['getUrl']),
+      dialog() {
+        return this.openDialog
+      },
     },
-    closeModal() {
-      this.$emit('closeDialog')
-    }
-  },
-  mounted() {
-    // this.initialize()
-    this.getSubscribers()
+    mounted() {
+      // this.initialize()
+      this.getSubscribers()
+    },
+    methods: {
+      async getSubscribers() {
+        this.loading = true
+        const subscribers = await SubscriptionService.getSubscribers(0)
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.loading = false
+          })
+
+        if (!subscribers) return
+        this.subscribers = subscribers.data.data
+
+        // console.log(subscribers)
+      },
+      // initialize() {
+      //   this.subscribers = [
+      //     {
+      //       channelName: 'Brad Traversy',
+      //       avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
+      //       createdAt: 'Apr 20, 2020',
+      //       subscribers: 5
+      //     },
+      //     {
+      //       channelName: 'John Doe',
+      //       avatar: 'https://cdn.vuetifyjs.com/images/john.jpg',
+      //       createdAt: 'Apr 20, 2020',
+      //       subscribers: 10
+      //     }
+      //   ]
+      // },
+      subscribe(item) {
+        console.log(item)
+      },
+      closeModal() {
+        this.$emit('closeDialog')
+      },
+    },
   }
-}
 </script>

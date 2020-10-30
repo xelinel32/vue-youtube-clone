@@ -7,9 +7,9 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
               <v-btn
-                @click="dialog = true"
                 class="mr-4 white"
                 icon
+                @click="dialog = true"
                 v-on="{ ...tooltip }"
                 ><v-icon size="25" class="small">mdi-upload</v-icon></v-btn
               >
@@ -32,11 +32,8 @@
         </v-col>
       </v-row>
     </v-container>
-    <upload-video-modal
-      :open-dialog="dialog"
-      v-on:closeDialog="dialog = false"
-    />
-    <subscribers-modal
+    <UploadVideoModal :open-dialog="dialog" @closeDialog="dialog = false" />
+    <SubscribersModal
       :open-dialog="subscribersDialog"
       @closeDialog="subscribersDialog = false"
     />
@@ -44,25 +41,25 @@
 </template>
 
 <script>
-import UploadVideoModal from '@/components/UploadVideoModal'
-import SubscribersModal from '@/components/SubscribersModal'
+  import UploadVideoModal from '@/components/UploadVideoModal'
+  import SubscribersModal from '@/components/SubscribersModal'
 
-export default {
-  data: () => ({
-    loading: true,
-    dialog: false,
-    subscribersDialog: false
-  }),
-  components: {
-    UploadVideoModal,
-    SubscribersModal
-  },
-  mounted() {}
-}
+  export default {
+    components: {
+      UploadVideoModal,
+      SubscribersModal,
+    },
+    data: () => ({
+      loading: true,
+      dialog: false,
+      subscribersDialog: false,
+    }),
+    mounted() {},
+  }
 </script>
 
 <style lang="scss">
-.card {
-  background: #f9f9f9 !important;
-}
+  .card {
+    background: #f9f9f9 !important;
+  }
 </style>

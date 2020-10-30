@@ -5,15 +5,15 @@ export default {
     return Api().get('subscriptions/channels', {
       params: {
         subscriberId,
-        select: 'channelId'
-      }
+        select: 'channelId',
+      },
     })
   },
   getSubscribers(limit) {
     return Api().get('subscriptions/subscribers', {
       params: {
-        limit
-      }
+        limit,
+      },
     })
   },
   checkSubscription(data) {
@@ -26,8 +26,8 @@ export default {
     return Api().get('subscriptions/videos', {
       params: {
         page,
-        limit: 12
-      }
+        limit: 12,
+      },
     })
-  }
+  },
 }

@@ -4,7 +4,7 @@ const state = {
   url: process.env.VUE_APP_URL,
   token: localStorage.getItem('token') || null,
   user: JSON.parse(localStorage.getItem('user')) || null,
-  isUserLoggedIn: localStorage.getItem('token') || false
+  isUserLoggedIn: localStorage.getItem('token') || false,
 }
 
 const getters = {
@@ -19,7 +19,7 @@ const getters = {
   },
   currentUser: (state) => {
     return state.user
-  }
+  },
 }
 
 const mutations = {
@@ -38,7 +38,7 @@ const mutations = {
     state.token = null
     state.user = null
     state.isUserLoggedIn = false
-  }
+  },
 }
 
 const actions = {
@@ -80,12 +80,12 @@ const actions = {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     commit('CLEAR_AUTH')
-  }
+  },
 }
 
 export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 }

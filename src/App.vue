@@ -2,35 +2,35 @@
   <v-app>
     <router-view name="NavBar"></router-view>
     <router-view name="StudioNavBar"></router-view>
-    <v-content
+    <v-main
       :class="{
         'content-bg': ![
           'SignIn',
           'SignUp',
           'Dashboard',
           'Video',
-          'Detail'
+          'Detail',
         ].includes(this.$route.name)
           ? true
-          : false
+          : false,
       }"
     >
       <router-view></router-view>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  export default {
+    name: 'App',
+  }
 </script>
 
 <style lang="scss">
-.content-bg {
-  background-color: #f9f9f9;
-}
-.card {
-  background: #f9f9f9 !important;
-}
+  .content-bg {
+    background-color: #f9f9f9;
+  }
+  .card {
+    background: #f9f9f9 !important;
+  }
 </style>

@@ -18,7 +18,7 @@ export default {
   },
   me(token) {
     return Api().post('auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
-  }
+  },
 }

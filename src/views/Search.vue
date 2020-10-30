@@ -2,7 +2,7 @@
   <div id="search" class="pl-6">
     <v-container fluid>
       <v-row>
-        <v-alert prominent class="mx-auto" type="error" v-if="errored">
+        <v-alert v-if="errored" prominent class="mx-auto" type="error">
           <v-row align="center">
             <v-col class="grow">
               <div class="title">Error!</div>
@@ -21,8 +21,8 @@
             <p class="text-center">Ops! No search results</p>
           </template>
           <div
-            v-else
             v-for="(result, i) in loading ? 5 : results"
+            v-else
             :key="i"
             class="mb-5"
           >
@@ -34,9 +34,9 @@
               large
             >
               <v-card
+                v-if="typeof result.channelName !== 'undefined'"
                 :to="`/channels/${result._id}`"
                 class="card mb-10"
-                v-if="typeof result.channelName !== 'undefined'"
                 tile
                 flat
               >
@@ -93,19 +93,17 @@
                 </v-row>
               </v-card>
               <v-card
+                v-else
                 :to="`/watch/${result._id}`"
                 class="card mb-10"
                 tile
                 flat
-                v-else
               >
-                <v-row no-gutters v-if="result.userId">
+                <v-row v-if="result.userId" no-gutters>
                   <v-col cols="5" sm="3" md="3" lg="3">
                     <v-img
                       class="align-center"
-                      :src="
-                        `${getUrl}/uploads/thumbnails/${result.thumbnailUrl}`
-                      "
+                      :src="`${getUrl}/uploads/thumbnails/${result.thumbnailUrl}`"
                       :alt="`${result.userId.channelName} avatar`"
                     >
                     </v-img>
@@ -135,7 +133,7 @@
               </v-card>
             </v-skeleton-loader>
           </div>
-          <infinite-loading
+          <InfiniteLoading
             :identifier="infiniteId"
             @infinite="getSearchResults"
           >
@@ -163,7 +161,7 @@
                 </v-row>
               </v-alert>
             </div>
-          </infinite-loading>
+          </InfiniteLoading>
         </v-col>
       </v-row>
     </v-container>
@@ -171,75 +169,75 @@
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
-import { mapGetters } from 'vuex'
-import SearchService from '@/services/SearchService'
+  import InfiniteLoading from 'vue-infinite-loading'
+  import { mapGetters } from 'vuex'
+  import SearchService from '@/services/SearchService'
 
-export default {
-  data: () => ({
-    errored: false,
-    loading: true,
-    loaded: false,
-    page: 1,
-    results: [],
-    text: '',
-    infiniteId: +new Date()
-  }),
-  computed: {
-    ...mapGetters(['getUrl'])
-  },
-  methods: {
-    async getSearchResults($state) {
-      this.errored = false
-      if (!this.loaded) {
-        this.loading = true
-      }
-      const results = await SearchService.search(this.page, {
-        text: this.text
-      })
-        .catch((err) => {
-          console.log(err)
-          this.errored = true
-        })
-        .finally(() => {
-          this.loading = false
-        })
-
-      if (!results) return
-      // console.log(results)
-      if (results.data.data.length) {
-        this.page += 1
-
-        this.results.push(...results.data.data)
-        if ($state) {
-          $state.loaded()
+  export default {
+    data: () => ({
+      errored: false,
+      loading: true,
+      loaded: false,
+      page: 1,
+      results: [],
+      text: '',
+      infiniteId: +new Date(),
+    }),
+    computed: {
+      ...mapGetters(['getUrl']),
+    },
+    mounted() {
+      this.text = this.$route.query['search-query']
+    },
+    methods: {
+      async getSearchResults($state) {
+        this.errored = false
+        if (!this.loaded) {
+          this.loading = true
         }
+        const results = await SearchService.search(this.page, {
+          text: this.text,
+        })
+          .catch((err) => {
+            console.log(err)
+            this.errored = true
+          })
+          .finally(() => {
+            this.loading = false
+          })
 
-        this.loaded = true
-      } else {
-        if ($state) {
-          $state.complete()
+        if (!results) return
+        // console.log(results)
+        if (results.data.data.length) {
+          this.page += 1
+
+          this.results.push(...results.data.data)
+          if ($state) {
+            $state.loaded()
+          }
+
+          this.loaded = true
+        } else {
+          if ($state) {
+            $state.complete()
+          }
         }
-      }
-    }
-  },
-  components: {
-    InfiniteLoading
-  },
-  beforeRouteUpdate(to, from, next) {
-    // console.log(to.query['search-query'])
-    if (to.query['search-query'] === '') return
-    this.text = to.query['search-query']
-    this.page = 1
-    this.results = []
-    this.infiniteId += 1
+      },
+    },
+    components: {
+      InfiniteLoading,
+    },
+    beforeRouteUpdate(to, from, next) {
+      // console.log(to.query['search-query'])
+      if (to.query['search-query'] === '') return
+      this.text = to.query['search-query']
+      this.page = 1
+      this.results = []
+      this.infiniteId += 1
 
-    next()
-  },
-  mounted() {
-    this.text = this.$route.query['search-query']
+      next()
+    },
   }
-}
 </script>
 
 <style></style>

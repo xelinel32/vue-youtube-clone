@@ -76,41 +76,41 @@
 </template>
 
 <script>
-export default {
-  name: 'SignIn',
-  data: () => ({
-    email: '',
-    password: '',
-    loading: false
-  }),
-  methods: {
-    async signin() {
-      if (this.loading) return
-      this.loading = true
+  export default {
+    name: 'SignIn',
+    data: () => ({
+      email: '',
+      password: '',
+      loading: false,
+    }),
+    methods: {
+      async signin() {
+        if (this.loading) return
+        this.loading = true
 
-      const data = await this.$store
-        .dispatch('signIn', { email: this.email, password: this.password })
-        .catch((err) => {
-          this.loading = false
-          console.log(err)
-          this.$refs.form.setErrors({
-            Email: ["We don't reconize, this email"],
-            Password: ["We don't reconize, this password"]
+        const data = await this.$store
+          .dispatch('signIn', { email: this.email, password: this.password })
+          .catch((err) => {
+            this.loading = false
+            console.log(err)
+            this.$refs.form.setErrors({
+              Email: ["We don't reconize, this email"],
+              Password: ["We don't reconize, this password"],
+            })
           })
-        })
 
-      if (!data) return
-      const user = await this.$store
-        .dispatch('getCurrentUser', data.token)
-        .catch((err) => console.log(err))
+        if (!data) return
+        const user = await this.$store
+          .dispatch('getCurrentUser', data.token)
+          .catch((err) => console.log(err))
 
-      if (!user) return
+        if (!user) return
 
-      this.loading = false
-      this.$router.push({ name: 'Home' })
-    }
+        this.loading = false
+        this.$router.push({ name: 'Home' })
+      },
+    },
   }
-}
 </script>
 
 <style></style>

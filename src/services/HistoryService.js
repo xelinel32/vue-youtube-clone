@@ -12,5 +12,5 @@ export default {
   },
   deleteAll(type) {
     return Api().delete(`histories/${type}/all`)
-  }
+  },
 }

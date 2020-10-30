@@ -4,13 +4,9 @@
     <h2>channel videos</h2>
 
     <!-- <v-row> -->
-    <v-tabs v-model="tab" id="tab" class="mt-5">
-      <v-tab>
-        Uploads
-      </v-tab>
-      <v-tab>
-        Live
-      </v-tab>
+    <v-tabs id="tab" v-model="tab" class="mt-5">
+      <v-tab> Uploads </v-tab>
+      <v-tab> Live </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -77,7 +73,6 @@
                                   class="pl-2 pt-2 pb-0"
                                   style="line-height: 1"
                                 >
-
                                   Published
                                   {{ dateFormatter(itemToDelete.createdAt) }}
                                   <br />
@@ -112,9 +107,7 @@
               </template>
               <template v-slot:item.actions="{ item }">
                 <v-btn icon href text class="mr-2">
-                  <v-icon @click="editItem(item)">
-                    mdi-pencil
-                  </v-icon>
+                  <v-icon @click="editItem(item)"> mdi-pencil </v-icon>
                 </v-btn>
                 <v-btn
                   icon
@@ -124,29 +117,23 @@
                   router
                   :to="`/watch/${item._id}`"
                 >
-                  <v-icon>
-                    mdi-youtube
-                  </v-icon>
+                  <v-icon> mdi-youtube </v-icon>
                 </v-btn>
                 <v-btn icon text @click.stop="deleteBtn(item)">
-                  <v-icon>
-                    mdi-delete
-                  </v-icon>
+                  <v-icon> mdi-delete </v-icon>
                 </v-btn>
               </template>
             </v-data-table>
           </v-card>
         </template>
       </v-tab-item>
-      <v-tab-item>
-        live
-      </v-tab-item>
+      <v-tab-item> live </v-tab-item>
     </v-tabs-items>
     <!-- </v-row> -->
     <!-- </v-container> -->
     <v-snackbar v-model="snackbar">
       Video deleted successfully
-      <v-btn color="white" text @click="snackbar = false" icon>
+      <v-btn color="white" text icon @click="snackbar = false">
         <v-icon>mdi-close-circle</v-icon>
       </v-btn>
     </v-snackbar>
@@ -154,84 +141,84 @@
 </template>
 
 <script>
-import VideoService from "@/services/VideoService";
-import moment from "moment";
-export default {
-  data: () => ({
-    loading: false,
-    deleteBtnLoading: false,
-    snackbar: false,
-    dialogDelete: false,
-    tab: null,
-    search: "",
-    url: process.env.VUE_APP_URL,
-    headers: [
-      {
-        text: "Video",
-        align: "start",
-        value: "title",
+  import VideoService from '@/services/VideoService'
+  import moment from 'moment'
+  export default {
+    data: () => ({
+      loading: false,
+      deleteBtnLoading: false,
+      snackbar: false,
+      dialogDelete: false,
+      tab: null,
+      search: '',
+      url: process.env.VUE_APP_URL,
+      headers: [
+        {
+          text: 'Video',
+          align: 'start',
+          value: 'title',
+        },
+        { text: 'Visibility', value: 'status' },
+        { text: 'Views', value: 'views' },
+        { text: 'Comments', value: 'comments' },
+        { text: 'Likes (vs. dislikes)', value: 'feelings' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      videos: [],
+      itemToDelete: {},
+    }),
+    mounted() {
+      this.getVideos()
+    },
+    methods: {
+      async getVideos() {
+        this.loading = true
+
+        const videos = await VideoService.getAll('private', { limit: 0 })
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => (this.loading = false))
+
+        if (!videos) return
+        // console.log(videos)
+        this.videos = videos.data.data
       },
-      { text: "Visibility", value: "status" },
-      { text: "Views", value: "views" },
-      { text: "Comments", value: "comments" },
-      { text: "Likes (vs. dislikes)", value: "feelings" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
-    videos: [],
-    itemToDelete: {},
-  }),
-  methods: {
-    async getVideos() {
-      this.loading = true;
-
-      const videos = await VideoService.getAll("private", { limit: 0 })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => (this.loading = false));
-
-      if (!videos) return;
-      // console.log(videos)
-      this.videos = videos.data.data;
+      editItem(item) {
+        this.$router.push({ name: `Detail`, params: { id: item.id } })
+      },
+      deleteBtn(item) {
+        this.dialogDelete = true
+        this.itemToDelete = item
+      },
+      async deleteItem() {
+        this.deleteBtnLoading = true
+        await VideoService.deleteById(this.itemToDelete._id)
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.videos = this.videos.filter(
+              (video) => this.itemToDelete.id !== video.id
+            )
+            this.deleteBtnLoading = false
+            this.dialogDelete = false
+            this.itemToDelete = {}
+            this.snackbar = true
+          })
+      },
+      dateFormatter(date) {
+        return moment(date).fromNow()
+      },
     },
-    editItem(item) {
-      this.$router.push({ name: `Detail`, params: { id: item.id } });
+    beforeRouteUpdate(to, from, next) {
+      this.getVideos()
+      next()
     },
-    deleteBtn(item) {
-      this.dialogDelete = true;
-      this.itemToDelete = item;
-    },
-    async deleteItem() {
-      this.deleteBtnLoading = true;
-      await VideoService.deleteById(this.itemToDelete._id)
-        .catch((err) => console.log(err))
-        .finally(() => {
-          this.videos = this.videos.filter(
-            (video) => this.itemToDelete.id !== video.id
-          );
-          this.deleteBtnLoading = false;
-          this.dialogDelete = false;
-          this.itemToDelete = {};
-          this.snackbar = true;
-        });
-    },
-    dateFormatter(date) {
-      return moment(date).fromNow();
-    },
-  },
-  mounted() {
-    this.getVideos();
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.getVideos();
-    next();
-  },
-};
+  }
 </script>
 
 <style lang="scss">
-// .card,
-// #tab .v-tabs-bar {
-//   background: #f9f9f9 !important;
-// }
+  // .card,
+  // #tab .v-tabs-bar {
+  //   background: #f9f9f9 !important;
+  // }
 </style>

@@ -1,3 +1,5 @@
 module.exports = {
-  transpileDependencies: ["vuetify"]
-};
+  transpileDependencies: ['vuetify'],
+  lintOnSave: process.env.NODE_ENV !== 'production',
+  productionSourceMap: true,
+}

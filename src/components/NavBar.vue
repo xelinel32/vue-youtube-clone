@@ -9,19 +9,19 @@
       >
       <v-spacer></v-spacer>
       <v-text-field
+        v-model="searchText"
         flat
         hide-details
         append-icon="mdi-magnify"
         placeholder="Search"
         outlined
         dense
-        v-model="searchText"
         @click:append="search"
       ></v-text-field>
 
       <v-spacer></v-spacer>
 
-      <v-menu offsetY>
+      <v-menu offset-y>
         <template v-slot:activator="{ on: menu }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
@@ -42,20 +42,20 @@
         </v-list>
       </v-menu>
       <v-btn
+        v-if="!$store.getters.isAuthenticated"
         tile
         outlined
         color="blue"
         class="font-weight-bold"
-        v-if="!$store.getters.isAuthenticated"
         router
         to="/signin"
       >
         <v-icon left size="26">mdi-account-circle</v-icon> Sign in
       </v-btn>
 
-      <v-menu offset-y left v-else>
+      <v-menu v-else offset-y left>
         <template v-slot:activator="{ on }">
-          <v-btn small color="red" depressed fab v-on="on" class="white--text">
+          <v-btn small color="red" depressed fab class="white--text" v-on="on">
             <v-avatar v-if="currentUser.photoUrl !== 'no-photo.jpg'">
               <img
                 :src="`${getUrl}/uploads/avatars/${currentUser.photoUrl}`"
@@ -64,7 +64,7 @@
             </v-avatar>
             <template v-else>
               <span class="headline">
-                {{ currentUser.channelName.split("")[0].toUpperCase() }}
+                {{ currentUser.channelName.split('')[0].toUpperCase() }}
               </span>
             </template>
           </v-btn>
@@ -82,9 +82,9 @@
                 </v-avatar>
                 <template v-else>
                   <v-avatar color="red">
-                    <span class="white--text headline ">
+                    <span class="white--text headline">
                       {{
-                        currentUser.channelName.split("")[0].toUpperCase()
+                        currentUser.channelName.split('')[0].toUpperCase()
                       }}</span
                     >
                   </v-avatar>
@@ -132,22 +132,22 @@
     </v-app-bar>
 
     <v-navigation-drawer
+      id="nav"
       v-model="drawer"
       app
       :clipped="$route.name !== 'Watch'"
       :temporary="$route.name === 'Watch'"
-      id="nav"
     >
-      <div tag="div" class="v-navigation-drawer__content" v-bar>
+      <div v-bar tag="div" class="v-navigation-drawer__content">
         <v-list dense nav class="py-0" tag="div">
           <v-list-item
             :class="{
-              'hidden-lg-and-up': $route.name === 'Watch' ? false : true
+              'hidden-lg-and-up': $route.name === 'Watch' ? false : true,
             }"
           >
             <v-app-bar-nav-icon
-              @click="drawer = !drawer"
               class="mr-5"
+              @click="drawer = !drawer"
             ></v-app-bar-nav-icon>
             <v-toolbar-title class="font-weight-bold">VueTube</v-toolbar-title>
           </v-list-item>
@@ -183,25 +183,23 @@
                   "
                 >
                   <img
-                    :src="
-                      `${getUrl}/uploads/avatars/${item.channelId.photoUrl}`
-                    "
+                    :src="`${getUrl}/uploads/avatars/${item.channelId.photoUrl}`"
                     :alt="`${item.channelId.channelName} avatar`"
                   />
                 </v-avatar>
                 <template v-else>
                   <v-avatar color="red">
-                    <span class="white--text headline ">
+                    <span class="white--text headline">
                       {{
-                        item.channelId.channelName.split("")[0].toUpperCase()
+                        item.channelId.channelName.split('')[0].toUpperCase()
                       }}</span
                     >
                   </v-avatar>
                 </template>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class=" font-weight-medium subtitle-2">{{
-                  parentItem.header === "Subscriptions"
+                <v-list-item-title class="font-weight-medium subtitle-2">{{
+                  parentItem.header === 'Subscriptions'
                     ? item.channelId.channelName
                     : item.title
                 }}</v-list-item-title>
@@ -209,24 +207,24 @@
             </v-list-item>
 
             <v-btn
-              id="showBtn"
-              @click="moreChannels"
               v-if="
                 parentItem.header === 'Subscriptions' &&
-                  isAuthenticated &&
-                  items[2].length > 0
+                isAuthenticated &&
+                items[2].length > 0
               "
+              id="showBtn"
               block
               text
               class="text-none"
+              @click="moreChannels"
             >
               <v-icon>{{
-                channelLength === 3 ? "mdi-chevron-down" : "mdi-chevron-up"
+                channelLength === 3 ? 'mdi-chevron-down' : 'mdi-chevron-up'
               }}</v-icon>
               {{
                 channelLength === 3
                   ? `Show ${items[2].pages.length - 3} more `
-                  : "Show less"
+                  : 'Show less'
               }}</v-btn
             >
 
@@ -255,243 +253,245 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import SubscriptionService from "@/services/SubscriptionService";
-import HistoryService from "@/services/HistoryService";
+  import { mapGetters } from 'vuex'
+  import SubscriptionService from '@/services/SubscriptionService'
+  import HistoryService from '@/services/HistoryService'
 
-export default {
-  data: () => ({
-    drawer: true,
-    items: [
-      {
-        header: null,
-        pages: [
-          { title: "Home", link: "/", icon: "mdi-home" },
-          { title: "Trending", link: "/trending", icon: "mdi-fire" },
-          {
-            title: "Subscriptions",
-            link: "/subscriptions",
-            icon: "mdi-youtube-subscription"
-          }
-        ]
-      },
-      {
-        header: null,
-        pages: [
-          {
-            title: "History",
-            link: "/history",
-            icon: "mdi-history"
-          },
-          {
-            title: "Liked videos",
-            link: "/liked-videos",
-            icon: "mdi-thumb-up"
-          }
-        ]
-      },
-      {
-        header: "Subscriptions",
-        pages: []
-      },
-      {
-        header: "MORE FROM VUETUBE",
-        pages: [
-          {
-            title: "VueTube Premium",
-            link: "#vp",
-            icon: "mdi-youtube"
-          },
-          {
-            title: "Gaming",
-            link: "#g",
-            icon: "mdi-youtube-gaming"
-          },
-          {
-            title: "Live",
-            link: "#li",
-            icon: "mdi-access-point"
-          }
-        ]
-      },
-      {
-        header: null,
-        pages: [
-          {
-            title: "Setting",
-            link: "#sg",
-            icon: "mdi-cog"
-          },
-          {
-            title: "Report history",
-            link: "#rh",
-            icon: "mdi-flag"
-          },
-          {
-            title: "Help",
-            link: "#hp",
-            icon: "mdi-help-circle"
-          },
-          {
-            title: "Send feedback",
-            link: "#f",
-            icon: "mdi-message-alert"
-          }
-        ]
+  export default {
+    data: () => ({
+      drawer: true,
+      items: [
+        {
+          header: null,
+          pages: [
+            { title: 'Home', link: '/', icon: 'mdi-home' },
+            { title: 'Trending', link: '/trending', icon: 'mdi-fire' },
+            {
+              title: 'Subscriptions',
+              link: '/subscriptions',
+              icon: 'mdi-youtube-subscription',
+            },
+          ],
+        },
+        {
+          header: null,
+          pages: [
+            {
+              title: 'History',
+              link: '/history',
+              icon: 'mdi-history',
+            },
+            {
+              title: 'Liked videos',
+              link: '/liked-videos',
+              icon: 'mdi-thumb-up',
+            },
+          ],
+        },
+        {
+          header: 'Subscriptions',
+          pages: [],
+        },
+        {
+          header: 'MORE FROM VUETUBE',
+          pages: [
+            {
+              title: 'VueTube Premium',
+              link: '#vp',
+              icon: 'mdi-youtube',
+            },
+            {
+              title: 'Gaming',
+              link: '#g',
+              icon: 'mdi-youtube-gaming',
+            },
+            {
+              title: 'Live',
+              link: '#li',
+              icon: 'mdi-access-point',
+            },
+          ],
+        },
+        {
+          header: null,
+          pages: [
+            {
+              title: 'Setting',
+              link: '#sg',
+              icon: 'mdi-cog',
+            },
+            {
+              title: 'Report history',
+              link: '#rh',
+              icon: 'mdi-flag',
+            },
+            {
+              title: 'Help',
+              link: '#hp',
+              icon: 'mdi-help-circle',
+            },
+            {
+              title: 'Send feedback',
+              link: '#f',
+              icon: 'mdi-message-alert',
+            },
+          ],
+        },
+      ],
+      links: [
+        { text: 'About', link: '#' },
+        { text: 'Press', link: '#' },
+        { text: 'Copyrignt', link: '#' },
+        { text: 'Contact us', link: '#' },
+        { text: 'Creators', link: '#' },
+        { text: 'Advertise', link: '#' },
+        { text: 'Developers', link: '#' },
+        { text: 'Terms', link: '#' },
+        { text: 'Privacy', link: '#' },
+        { text: 'Policy & Safety', link: '#' },
+        { text: 'Test new features', link: '#' },
+      ],
+      channelLength: 0,
+      searchText: '',
+      // user: null
+    }),
+    computed: {
+      ...mapGetters(['currentUser', 'getUrl', 'isAuthenticated']),
+    },
+    mounted() {
+      if (this.currentUser) this.getSubscribedChannels()
+      this.drawer = this.$vuetify.breakpoint.mdAndDown ? false : true
+      this.drawer = this.$route.name === 'Watch' ? false : this.drawer
+    },
+    created() {
+      this.drawer = this.$route.name === 'Watch' ? false : this.drawer
+
+      if (!this.isAuthenticated) {
+        this.items[2].header = false
+        this.items[0].pages.pop()
       }
-    ],
-    links: [
-      { text: "About", link: "#" },
-      { text: "Press", link: "#" },
-      { text: "Copyrignt", link: "#" },
-      { text: "Contact us", link: "#" },
-      { text: "Creators", link: "#" },
-      { text: "Advertise", link: "#" },
-      { text: "Developers", link: "#" },
-      { text: "Terms", link: "#" },
-      { text: "Privacy", link: "#" },
-      { text: "Policy & Safety", link: "#" },
-      { text: "Test new features", link: "#" }
-    ],
-    channelLength: 0,
-    searchText: ""
-    // user: null
-  }),
-  computed: {
-    ...mapGetters(["currentUser", "getUrl", "isAuthenticated"])
-  },
-  methods: {
-    async search() {
-      if (!this.searchText) return;
-      // console.log(this.searchText == this.$route.query['search-query'])
-      if (this.searchText == this.$route.query["search-query"]) return;
-      // this.searchText = this.$route.query['search-query']
-      const data = {
-        type: "search",
-        searchText: this.searchText
-      };
-
-      if (this.isAuthenticated)
-        await HistoryService.createHistory(data).catch(err => console.log(err));
-
-      this.$router.push({
-        name: "Search",
-        query: { "search-query": this.searchText }
-      });
     },
-    async getSubscribedChannels() {
-      const channels = await SubscriptionService.getSubscribedChannels(
-        this.currentUser._id
-      ).catch(err => console.log(err));
-      this.items[2].pages = channels.data.data;
-      this.channelLength = 3;
-    },
-    moreChannels() {
-      if (this.channelLength === 3)
-        this.channelLength = this.items[2].pages.length;
-      else this.channelLength = 3;
-    },
-    signOut() {
-      this.$store.dispatch("signOut");
-    }
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (!to.query["search-query"] === "") return;
-      vm.searchText = to.query["search-query"];
-    });
-  },
-  mounted() {
-    if (this.currentUser) this.getSubscribedChannels();
-    this.drawer = this.$vuetify.breakpoint.mdAndDown ? false : true;
-    this.drawer = this.$route.name === "Watch" ? false : this.drawer;
-  },
-  created() {
-    this.drawer = this.$route.name === "Watch" ? false : this.drawer;
+    methods: {
+      async search() {
+        if (!this.searchText) return
+        // console.log(this.searchText == this.$route.query['search-query'])
+        if (this.searchText == this.$route.query['search-query']) return
+        // this.searchText = this.$route.query['search-query']
+        const data = {
+          type: 'search',
+          searchText: this.searchText,
+        }
 
-    if (!this.isAuthenticated) {
-      this.items[2].header = false;
-      this.items[0].pages.pop();
-    }
+        if (this.isAuthenticated)
+          await HistoryService.createHistory(data).catch((err) =>
+            console.log(err)
+          )
+
+        this.$router.push({
+          name: 'Search',
+          query: { 'search-query': this.searchText },
+        })
+      },
+      async getSubscribedChannels() {
+        const channels = await SubscriptionService.getSubscribedChannels(
+          this.currentUser._id
+        ).catch((err) => console.log(err))
+        this.items[2].pages = channels.data.data
+        this.channelLength = 3
+      },
+      moreChannels() {
+        if (this.channelLength === 3)
+          this.channelLength = this.items[2].pages.length
+        else this.channelLength = 3
+      },
+      signOut() {
+        this.$store.dispatch('signOut')
+      },
+    },
+    beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        if (!to.query['search-query'] === '') return
+        vm.searchText = to.query['search-query']
+      })
+    },
   }
-};
 </script>
 
 <style lang="scss">
-.v-list-item__avatar {
-  justify-content: center !important;
-}
-#showBtn {
-  .v-btn__content {
-    justify-content: flex-start;
+  .v-list-item__avatar {
+    justify-content: center !important;
+  }
+  #showBtn {
+    .v-btn__content {
+      justify-content: flex-start;
 
-    i {
-      margin-right: 30px;
+      i {
+        margin-right: 30px;
+      }
     }
   }
-}
-#navbar {
-  .active-item {
-    .v-list-item__icon {
-      color: red !important;
+  #navbar {
+    .active-item {
+      .v-list-item__icon {
+        color: red !important;
+      }
+    }
+    .v-navigation-drawer__border {
+      width: 0 !important;
+    }
+
+    .vuebar-element {
+      height: 250px;
+      width: 100%;
+      max-width: 500px;
+      background: #dfe9fe;
+    }
+
+    .vb > .vb-dragger {
+      z-index: 5;
+      width: 10px;
+      right: 0;
+    }
+
+    .vb > .vb-dragger > .vb-dragger-styler {
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: rotate3d(0, 0, 0, 0);
+      transform: rotate3d(0, 0, 0, 0);
+      -webkit-transition: background-color 100ms ease-out, margin 100ms ease-out,
+        height 100ms ease-out;
+      transition: background-color 100ms ease-out, margin 100ms ease-out,
+        height 100ms ease-out;
+
+      margin: 5px 5px 5px 0;
+      border-radius: 20px;
+      height: calc(100% - 10px);
+      display: block;
+    }
+
+    .v-navigation-drawer__content:hover .vb > .vb-dragger > .vb-dragger-styler {
+      width: 10px;
+      background-color: #e0e0e0;
+    }
+
+    .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
+      background-color: rgba(48, 121, 244, 0.3);
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vb > .vb-dragger:hover > .vb-dragger-styler {
+      margin: 0px;
+      width: 10px;
+    }
+
+    .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
+      background-color: rgba(48, 121, 244, 0.5);
+      margin: 0px;
+      height: 100%;
+    }
+
+    .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
+      background-color: rgba(48, 121, 244, 0.5);
     }
   }
-  .v-navigation-drawer__border {
-    width: 0 !important;
-  }
-
-  .vuebar-element {
-    height: 250px;
-    width: 100%;
-    max-width: 500px;
-    background: #dfe9fe;
-  }
-
-  .vb > .vb-dragger {
-    z-index: 5;
-    width: 10px;
-    right: 0;
-  }
-
-  .vb > .vb-dragger > .vb-dragger-styler {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform: rotate3d(0, 0, 0, 0);
-    transform: rotate3d(0, 0, 0, 0);
-    -webkit-transition: background-color 100ms ease-out, margin 100ms ease-out,
-      height 100ms ease-out;
-    transition: background-color 100ms ease-out, margin 100ms ease-out,
-      height 100ms ease-out;
-
-    margin: 5px 5px 5px 0;
-    border-radius: 20px;
-    height: calc(100% - 10px);
-    display: block;
-  }
-
-  .v-navigation-drawer__content:hover .vb > .vb-dragger > .vb-dragger-styler {
-    width: 10px;
-    background-color: #e0e0e0;
-  }
-
-  .vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
-    background-color: rgba(48, 121, 244, 0.3);
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-
-  .vb > .vb-dragger:hover > .vb-dragger-styler {
-    margin: 0px;
-    width: 10px;
-  }
-
-  .vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
-    background-color: rgba(48, 121, 244, 0.5);
-    margin: 0px;
-    height: 100%;
-  }
-
-  .vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
-    background-color: rgba(48, 121, 244, 0.5);
-  }
-}
 </style>

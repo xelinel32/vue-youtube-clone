@@ -66,8 +66,8 @@
                           rules="required"
                         >
                           <v-text-field
-                            type="password"
                             v-model="confirmPassword"
+                            type="password"
                             :error-messages="errors"
                             label="Confirm"
                             outlined
@@ -228,55 +228,55 @@
 </template>
 
 <script>
-export default {
-  name: 'SignUp',
-  data: () => ({
-    email: '',
-    channelName: '',
-    password: '',
-    confirmPassword: '',
-    loading: false
-  }),
-  methods: {
-    async signUp() {
-      this.loading = true
+  export default {
+    name: 'SignUp',
+    data: () => ({
+      email: '',
+      channelName: '',
+      password: '',
+      confirmPassword: '',
+      loading: false,
+    }),
+    methods: {
+      async signUp() {
+        this.loading = true
 
-      const data = await this.$store
-        .dispatch('signUp', {
-          email: this.email,
-          channelName: this.channelName,
-          password: this.password
-        })
-        .catch((err) => {
-          this.loading = false
-          const errors = err.response.data.error
-
-          this.$refs.form.setErrors({
-            'Email': errors.find((error) => {
-              return error.field === 'email'
-            })
-              ? ['This email is already taken']
-              : null,
-            'Channel Name': errors.find((error) => {
-              return error.field === 'channelName'
-            })
-              ? ['This channel name is already taken']
-              : null
+        const data = await this.$store
+          .dispatch('signUp', {
+            email: this.email,
+            channelName: this.channelName,
+            password: this.password,
           })
-        })
+          .catch((err) => {
+            this.loading = false
+            const errors = err.response.data.error
 
-      if (!data) return
+            this.$refs.form.setErrors({
+              Email: errors.find((error) => {
+                return error.field === 'email'
+              })
+                ? ['This email is already taken']
+                : null,
+              'Channel Name': errors.find((error) => {
+                return error.field === 'channelName'
+              })
+                ? ['This channel name is already taken']
+                : null,
+            })
+          })
 
-      const user = await this.$store
-        .dispatch('getCurrentUser', data.token)
-        .catch((err) => console.log(err))
+        if (!data) return
 
-      if (!user) return
-      this.loading = false
-      this.$router.push({ name: 'Home' })
-    }
+        const user = await this.$store
+          .dispatch('getCurrentUser', data.token)
+          .catch((err) => console.log(err))
+
+        if (!user) return
+        this.loading = false
+        this.$router.push({ name: 'Home' })
+      },
+    },
   }
-}
 </script>
 
 <style></style>

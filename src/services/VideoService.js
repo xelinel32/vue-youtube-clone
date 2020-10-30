@@ -3,7 +3,7 @@ import Api from '@/services/Api'
 export default {
   getAll(data, params) {
     return Api().get(`videos/${data}`, {
-      params
+      params,
     })
   },
   getById(id) {
@@ -23,5 +23,5 @@ export default {
   },
   deleteById(id) {
     return Api().delete(`videos/${id}`)
-  }
+  },
 }

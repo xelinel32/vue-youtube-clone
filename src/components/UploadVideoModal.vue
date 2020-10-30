@@ -6,12 +6,10 @@
     max-width="1000"
   >
     <v-card>
-      <div class="d-flex justify-space-between mb-5" id="modal-header">
+      <div id="modal-header" class="d-flex justify-space-between mb-5">
         <v-card-title class="py-3">Upload Video</v-card-title>
         <div class="mt-3 mr-2">
-          <v-btn text>
-            Upload With Classic
-          </v-btn>
+          <v-btn text> Upload With Classic </v-btn>
           <v-btn icon text @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -27,7 +25,7 @@
             <v-btn
               icon
               class="grey lighten-2 mb-4"
-              style="height: 104px;width: 104px;"
+              style="height: 104px; width: 104px"
               @click="selectFile"
               ><v-icon x-large class="grey--text text--darken-1"
                 >mdi-upload</v-icon
@@ -36,26 +34,26 @@
           </div>
 
           <ValidationProvider
-            rules="required|size:5000"
             v-slot="{ errors }"
-            name="file"
             ref="provider"
+            rules="required|size:5000"
+            name="file"
           >
             <v-file-input
-              @change="uploadVideo"
+              ref="fileInput"
               v-model="selectedFile"
               accept="video/mp4"
               placeholder="Pick an video"
               prepend-icon="mdi-video"
               :error-messages="errors"
-              ref="fileInput"
+              @change="uploadVideo"
             ></v-file-input>
           </ValidationProvider>
           <v-btn
             type="submit"
             depressed
-            @click="$refs.fileInput.$refs.input.click()"
             class="blue darken-3 flat white--text mt-4"
+            @click="$refs.fileInput.$refs.input.click()"
             >Select File</v-btn
           >
         </div>
@@ -109,6 +107,7 @@
                   rules="required|min:3"
                 >
                   <v-textarea
+                    v-model="formData.description"
                     filled
                     auto-grow
                     :error-messages="errors"
@@ -117,7 +116,6 @@
                     rows="5"
                     counter="5000"
                     max-length="5000"
-                    v-model="formData.description"
                     row-height="20"
                   ></v-textarea>
                 </ValidationProvider>
@@ -127,11 +125,11 @@
                   rules="required|min:3"
                 >
                   <v-select
+                    v-model="formData.visibilty"
                     :items="visibilty"
                     :error-messages="errors"
                     filled
                     label="Visibilty"
-                    v-model="formData.visibilty"
                   ></v-select>
                 </ValidationProvider>
                 <ValidationProvider
@@ -140,11 +138,11 @@
                   rules="required|min:3"
                 >
                   <v-select
+                    v-model="formData.category"
                     :items="categoriesTitles"
                     :error-messages="errors"
                     filled
                     label="Categories"
-                    v-model="formData.category"
                     :loading="categoryLoading"
                   ></v-select>
                 </ValidationProvider>
@@ -171,19 +169,19 @@
           >
             <v-btn text @click="toggleShow">Upload Thumbnails</v-btn>
             <my-upload
-              field="thumbnail"
-              @crop-success="cropSuccess"
-              method="PUT"
               v-model="show"
+              field="thumbnail"
+              method="PUT"
               :width="1280"
               :height="720"
               :url="url"
               :headers="headers"
               img-format="jpg"
-              langType="en"
+              lang-type="en"
+              @crop-success="cropSuccess"
             ></my-upload>
             <v-responsive width="330" class="mx-auto">
-              <div v-if="!imgDataUrl" class="px-12" id="image-placeholder">
+              <div v-if="!imgDataUrl" id="image-placeholder" class="px-12">
                 <v-icon>mdi-image-plus</v-icon>
               </div>
               <v-img
@@ -211,172 +209,172 @@
 </template>
 
 <script>
-import myUpload from "vue-image-crop-upload";
-import VideoService from "@/services/VideoService";
-import CategoryService from "@/services/CategoryService";
-export default {
-  name: "UploadModal",
-  props: ["openDialog"],
-  data: function () {
-    return {
-      // dialog: this.openDialog ? this.openDialog : false,
-      valid: false,
-      uploaded: false,
-      uploading: false,
-      submitLoading: false,
-      categoryLoading: false,
-      interval: {},
-      value: 0,
-      show: false,
-      rules: [
-        (value) =>
-          !value ||
-          value.size > 5000000 ||
-          `Video size should be less than 5 MB!, ${value.size}`,
-      ],
-      categoriesTitles: [],
-      categories: [],
-      visibilty: ["Public", "Private"],
-      selectedFile: [],
-      formData: {
-        id: "",
-        title: "",
-        description: "",
-        category: "",
-        visibilty: "",
-      },
-      imgDataUrl: "",
-      url: "",
-      headers: { Authorization: `Bearer ${this.$store.getters.getToken}` },
-    };
-  },
-  computed: {
-    dialog() {
-      return this.openDialog;
+  import myUpload from 'vue-image-crop-upload'
+  import VideoService from '@/services/VideoService'
+  import CategoryService from '@/services/CategoryService'
+  export default {
+    name: 'UploadModal',
+    components: {
+      myUpload,
     },
-  },
-  methods: {
-    async uploadVideo(e) {
-      const { valid } = await this.$refs.provider.validate(e);
-
-      if (!valid) return;
-      // console.log(this.selectedFile)
-
-      this.uploading = true;
-      const fd = new FormData();
-      fd.append("video", this.selectedFile, this.selectedFile.name);
-
-      let video = await VideoService.uploadVideo(fd, {
-        onUploadProgress: (uploadEvent) => {
-          this.value = Math.round(
-            (uploadEvent.loaded / uploadEvent.total) * 100
-          );
+    props: ['openDialog'],
+    data: function () {
+      return {
+        // dialog: this.openDialog ? this.openDialog : false,
+        valid: false,
+        uploaded: false,
+        uploading: false,
+        submitLoading: false,
+        categoryLoading: false,
+        interval: {},
+        value: 0,
+        show: false,
+        rules: [
+          (value) =>
+            !value ||
+            value.size > 5000000 ||
+            `Video size should be less than 5 MB!, ${value.size}`,
+        ],
+        categoriesTitles: [],
+        categories: [],
+        visibilty: ['Public', 'Private'],
+        selectedFile: [],
+        formData: {
+          id: '',
+          title: '',
+          description: '',
+          category: '',
+          visibilty: '',
         },
-      })
-        .catch((err) => {
-          console.log(err);
+        imgDataUrl: '',
+        url: '',
+        headers: { Authorization: `Bearer ${this.$store.getters.getToken}` },
+      }
+    },
+    computed: {
+      dialog() {
+        return this.openDialog
+      },
+    },
+    mounted() {
+      this.getCategories()
+    },
+    methods: {
+      async uploadVideo(e) {
+        const { valid } = await this.$refs.provider.validate(e)
+
+        if (!valid) return
+        // console.log(this.selectedFile)
+
+        this.uploading = true
+        const fd = new FormData()
+        fd.append('video', this.selectedFile, this.selectedFile.name)
+
+        let video = await VideoService.uploadVideo(fd, {
+          onUploadProgress: (uploadEvent) => {
+            this.value = Math.round(
+              (uploadEvent.loaded / uploadEvent.total) * 100
+            )
+          },
         })
-        .finally(() => {
-          this.uploaded = true;
-          this.uploading = false;
-        });
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            this.uploaded = true
+            this.uploading = false
+          })
 
-      if (!video) return;
-      video = video.data.data;
+        if (!video) return
+        video = video.data.data
 
-      this.formData.id = video._id;
-      this.formData.title = video.title;
-      this.formData.description = video.description;
-      this.formData.cateogry = video.cateogry;
-      this.url = `${process.env.VUE_APP_URL}/api/v1/videos/${video._id}/thumbnails`;
-      // this.interval = setInterval(() => {
-      //   if (this.value === 100) {
-      //     this.uploaded = true
-      //     clearInterval(this.inte-rval)
-      //   }
-      //   this.value += 10
-      // }, 1000)
-      // }
-      // }
-    },
-    async submit() {
-      if (this.imgDataUrl == "") return;
-      this.submitLoading = true;
-      this.formData.category = this.categories.find(
-        (category) => category.title === this.formData.category
-      )._id;
+        this.formData.id = video._id
+        this.formData.title = video.title
+        this.formData.description = video.description
+        this.formData.cateogry = video.cateogry
+        this.url = `${process.env.VUE_APP_URL}/api/v1/videos/${video._id}/thumbnails`
+        // this.interval = setInterval(() => {
+        //   if (this.value === 100) {
+        //     this.uploaded = true
+        //     clearInterval(this.inte-rval)
+        //   }
+        //   this.value += 10
+        // }, 1000)
+        // }
+        // }
+      },
+      async submit() {
+        if (this.imgDataUrl == '') return
+        this.submitLoading = true
+        this.formData.category = this.categories.find(
+          (category) => category.title === this.formData.category
+        )._id
 
-      const video = await VideoService.updateVideo(this.formData.id, {
-        title: this.formData.title,
-        description: this.formData.description,
-        categoryId: this.formData.category,
-        status: this.formData.visibilty.toLowerCase(),
-      })
-        .catch((err) => {
-          console.log(err);
+        const video = await VideoService.updateVideo(this.formData.id, {
+          title: this.formData.title,
+          description: this.formData.description,
+          categoryId: this.formData.category,
+          status: this.formData.visibilty.toLowerCase(),
         })
-        .finally(() => {
-          this.submitLoading = false;
-          this.uploaded = false;
-        });
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => {
+            this.submitLoading = false
+            this.uploaded = false
+          })
 
-      if (!video) return;
-      // this.$nextTick(() => {
-      //   this.$refs.form.reset()
-      // })
-      this.formData.visibilty = "";
-      this.imgDataUrl = "";
-      this.selectedFile = [];
-      this.closeModal();
+        if (!video) return
+        // this.$nextTick(() => {
+        //   this.$refs.form.reset()
+        // })
+        this.formData.visibilty = ''
+        this.imgDataUrl = ''
+        this.selectedFile = []
+        this.closeModal()
 
-      this.$router.push(`/studio/videos?${new Date()}`);
-      // console.log('submittied')
-    },
-    async getCategories() {
-      this.categoryLoading = true;
-      const categories = await CategoryService.getAll()
-        .catch((err) => {
-          console.log(err);
+        this.$router.push(`/studio/videos?${new Date()}`)
+        // console.log('submittied')
+      },
+      async getCategories() {
+        this.categoryLoading = true
+        const categories = await CategoryService.getAll()
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(() => (this.categoryLoading = false))
+
+        this.categoriesTitles = categories.data.data.map((category) => {
+          return category.title
         })
-        .finally(() => (this.categoryLoading = false));
-
-      this.categoriesTitles = categories.data.data.map((category) => {
-        return category.title;
-      });
-      this.categories = categories.data.data;
+        this.categories = categories.data.data
+      },
+      closeModal() {
+        this.$emit('closeDialog')
+      },
+      selectFile() {
+        this.$refs.fileInput.$refs.input.click()
+      },
+      toggleShow() {
+        this.show = !this.show
+      },
+      cropSuccess(imgDataUrl, field) {
+        console.log('-------- crop success --------')
+        console.log(field)
+        this.imgDataUrl = imgDataUrl
+      },
     },
-    closeModal() {
-      this.$emit("closeDialog");
-    },
-    selectFile() {
-      this.$refs.fileInput.$refs.input.click();
-    },
-    toggleShow() {
-      this.show = !this.show;
-    },
-    cropSuccess(imgDataUrl, field) {
-      console.log("-------- crop success --------");
-      console.log(field);
-      this.imgDataUrl = imgDataUrl;
-    },
-  },
-  components: {
-    myUpload,
-  },
-  mounted() {
-    this.getCategories();
-  },
-};
+  }
 </script>
 
 <style lang="scss">
-#modal-header {
-  border-bottom: 1px solid rgb(238, 232, 232);
-}
+  #modal-header {
+    border-bottom: 1px solid rgb(238, 232, 232);
+  }
 
-#image-placeholder {
-  padding-top: 8em;
-  padding-bottom: 8em;
-  border: 2px dashed rgb(209, 209, 209);
-}
+  #image-placeholder {
+    padding-top: 8em;
+    padding-bottom: 8em;
+    border: 2px dashed rgb(209, 209, 209);
+  }
 </style>
