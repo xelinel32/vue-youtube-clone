@@ -3,10 +3,7 @@
     <v-app-bar class="white" app clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-bold"
-        ><router-link
-          to="/studio"
-          class="black--text"
-          style="text-decoration: none"
+        ><router-link to="/studio" class="black--text" style="text-decoration: none"
           >Studio</router-link
         ></v-toolbar-title
       >
@@ -27,14 +24,8 @@
         <template v-slot:activator="{ on: menu }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn
-                class="mr-8 createVideoBtn"
-                outlined
-                v-on="{ ...tooltip, ...menu }"
-                ><v-icon size="25" class="red--text small"
-                  >mdi-video-plus</v-icon
-                >
-                Create</v-btn
+              <v-btn class="mr-8 createVideoBtn" outlined v-on="{ ...tooltip, ...menu }"
+                ><v-icon size="25" class="red--text small">mdi-video-plus</v-icon> Create</v-btn
               >
             </template>
             <span>Create a video and more</span>
@@ -42,9 +33,7 @@
         </template>
         <v-list>
           <v-list-item @click="modal">
-            <v-list-item-icon class="mr-3"
-              ><v-icon>mdi-play-box-outline</v-icon></v-list-item-icon
-            >
+            <v-list-item-icon class="mr-3"><v-icon>mdi-play-box-outline</v-icon></v-list-item-icon>
             <v-list-item-title>Upload video</v-list-item-title>
           </v-list-item>
           <!-- <v-list-item>
@@ -85,22 +74,14 @@
                 </v-avatar>
                 <template v-else>
                   <v-avatar color="red">
-                    <span class="white--text headline">
-                      {{
-                        currentUser.channelName.split('')[0].toUpperCase()
-                      }}</span
-                    >
+                    <span class="white--text headline"> {{ currentUser.channelName.split('')[0].toUpperCase() }}</span>
                   </v-avatar>
                 </template>
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title class="text-capitalize">{{
-                  currentUser.channelName
-                }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  currentUser.email
-                }}</v-list-item-subtitle>
+                <v-list-item-title class="text-capitalize">{{ currentUser.channelName }}</v-list-item-title>
+                <v-list-item-subtitle>{{ currentUser.email }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -108,10 +89,7 @@
           <v-divider></v-divider>
 
           <v-list>
-            <v-list-item
-              router
-              :to="`/channels/${$store.getters.currentUser._id}`"
-            >
+            <v-list-item router :to="`/channels/${$store.getters.currentUser._id}`">
               <v-list-item-icon>
                 <v-icon>mdi-account-box</v-icon>
               </v-list-item-icon>
@@ -153,9 +131,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title class="font-weight-medium subtitle-2">{{
-                item.title
-              }}</v-list-item-title>
+              <v-list-item-title class="font-weight-medium subtitle-2">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -179,9 +155,7 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title class="font-weight-medium subtitle-2">{{
-                  item.title
-                }}</v-list-item-title>
+                <v-list-item-title class="font-weight-medium subtitle-2">{{ item.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -201,11 +175,7 @@
                 :to="`/channels/${currentUser._id}`"
                 class="white--text mx-auto"
               >
-                <v-avatar
-                  v-if="currentUser.photoUrl !== 'no-photo.jpg'"
-                  height="96"
-                  width="96"
-                >
+                <v-avatar v-if="currentUser.photoUrl !== 'no-photo.jpg'" height="96" width="96">
                   <img
                     :src="`${getUrl}/uploads/avatars/${currentUser.photoUrl}`"
                     :alt="`${currentUser.channelName} avatar`"
@@ -224,12 +194,8 @@
 
             <v-list-item link :to="`/channels/${currentUser._id}`">
               <v-list-item-content>
-                <v-list-item-title class="title">{{
-                  currentUser.channelName
-                }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  currentUser.email
-                }}</v-list-item-subtitle>
+                <v-list-item-title class="title">{{ currentUser.channelName }}</v-list-item-title>
+                <v-list-item-subtitle>{{ currentUser.email }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -237,10 +203,7 @@
       </template>
     </v-navigation-drawer>
     <UploadVideoModal :open-dialog="dialog" @closeDialog="dialog = false" />
-    <SettingsModal
-      :open-dialog="settingsDialog"
-      @closeDialog="settingsDialog = false"
-    />
+    <SettingsModal :open-dialog="settingsDialog" @closeDialog="settingsDialog = false" />
   </nav>
 </template>
 

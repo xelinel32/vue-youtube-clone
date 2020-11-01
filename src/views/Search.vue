@@ -6,10 +6,7 @@
           <v-row align="center">
             <v-col class="grow">
               <div class="title">Error!</div>
-              <div>
-                Something went wrong, but don’t fret — let’s give it another
-                shot.
-              </div>
+              <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
             </v-col>
             <v-col class="shrink">
               <v-btn @click="get">Take action</v-btn>
@@ -20,19 +17,8 @@
           <template v-if="results.length === 0">
             <p class="text-center">Ops! No search results</p>
           </template>
-          <div
-            v-for="(result, i) in loading ? 5 : results"
-            v-else
-            :key="i"
-            class="mb-5"
-          >
-            <v-skeleton-loader
-              class="mx-auto"
-              type="list-item-avatar-three-line"
-              :loading="loading"
-              tile
-              large
-            >
+          <div v-for="(result, i) in loading ? 5 : results" v-else :key="i" class="mb-5">
+            <v-skeleton-loader class="mx-auto" type="list-item-avatar-three-line" :loading="loading" tile large>
               <v-card
                 v-if="typeof result.channelName !== 'undefined'"
                 :to="`/channels/${result._id}`"
@@ -51,30 +37,20 @@
                         :alt="`${result.channelName} avatar`"
                       />
                       <template v-else color="red">
-                        <span class="white--text display-1">
-                          {{
-                            result.channelName.split('')[0].toUpperCase()
-                          }}</span
-                        >
+                        <span class="white--text display-1"> {{ result.channelName.split('')[0].toUpperCase() }}</span>
                       </template>
                     </v-avatar>
                     <!-- </v-responsive> -->
                   </v-col>
                   <v-col cols="10" sm="10" md="6" lg="6" class="justify-center">
                     <!-- <div class="ml-2"> -->
-                    <v-card-title
-                      class="pl-2 pt-0 subtitle-1 font-weight-bold align-center"
-                    >
+                    <v-card-title class="pl-2 pt-0 subtitle-1 font-weight-bold align-center">
                       {{ result.channelName }}
                     </v-card-title>
 
-                    <v-card-subtitle
-                      class="pl-2 pt-2 pb-0"
-                      style="line-height: 1.2"
-                    >
+                    <v-card-subtitle class="pl-2 pt-2 pb-0" style="line-height: 1.2">
                       {{ result.subscribers }}
-                      subscribers<v-icon>mdi-circle-small</v-icon
-                      >{{ result.videos }} videos
+                      subscribers<v-icon>mdi-circle-small</v-icon>{{ result.videos }} videos
                     </v-card-subtitle>
                     <v-card-subtitle class="pl-2 pt-2 pb-0">
                       {{ result.description }}
@@ -92,13 +68,7 @@
                   </v-col> -->
                 </v-row>
               </v-card>
-              <v-card
-                v-else
-                :to="`/watch/${result._id}`"
-                class="card mb-10"
-                tile
-                flat
-              >
+              <v-card v-else :to="`/watch/${result._id}`" class="card mb-10" tile flat>
                 <v-row v-if="result.userId" no-gutters>
                   <v-col cols="5" sm="3" md="3" lg="3">
                     <v-img
@@ -110,16 +80,11 @@
                   </v-col>
                   <v-col cols="7" sm="7" md="8" lg="8">
                     <div class="ml-2">
-                      <v-card-title
-                        class="pl-2 pt-0 subtitle-1 font-weight-bold"
-                      >
+                      <v-card-title class="pl-2 pt-0 subtitle-1 font-weight-bold">
                         {{ result.title }}
                       </v-card-title>
 
-                      <v-card-subtitle
-                        class="pl-2 pt-2 pb-0"
-                        style="line-height: 1.2"
-                      >
+                      <v-card-subtitle class="pl-2 pt-2 pb-0" style="line-height: 1.2">
                         {{ result.userId.channelName }}<br />
                         {{ result.views }}
                         views<v-icon>mdi-circle-small</v-icon>6 hours ago
@@ -133,15 +98,9 @@
               </v-card>
             </v-skeleton-loader>
           </div>
-          <InfiniteLoading
-            :identifier="infiniteId"
-            @infinite="getSearchResults"
-          >
+          <InfiniteLoading :identifier="infiniteId" @infinite="getSearchResults">
             <div slot="spinner">
-              <v-progress-circular
-                indeterminate
-                color="red"
-              ></v-progress-circular>
+              <v-progress-circular indeterminate color="red"></v-progress-circular>
             </div>
             <div slot="no-results"></div>
             <span slot="no-more"></span>
@@ -150,10 +109,7 @@
                 <v-row align="center">
                   <v-col class="grow">
                     <div class="title">Error!</div>
-                    <div>
-                      Something went wrong, but don’t fret — let’s give it
-                      another shot.
-                    </div>
+                    <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
                   </v-col>
                   <v-col class="shrink">
                     <v-btn @click="trigger">Take action</v-btn>
@@ -174,6 +130,9 @@
   import SearchService from '@/services/SearchService'
 
   export default {
+    components: {
+      InfiniteLoading,
+    },
     data: () => ({
       errored: false,
       loading: true,
@@ -223,9 +182,6 @@
           }
         }
       },
-    },
-    components: {
-      InfiniteLoading,
     },
     beforeRouteUpdate(to, from, next) {
       // console.log(to.query['search-query'])

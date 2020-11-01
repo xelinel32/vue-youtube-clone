@@ -3,9 +3,7 @@
     <v-app-bar flat app dark clipped-left>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-bold"
-        ><router-link to="/" class="white--text" style="text-decoration: none"
-          >VueTube</router-link
-        ></v-toolbar-title
+        ><router-link to="/" class="white--text" style="text-decoration: none">VueTube</router-link></v-toolbar-title
       >
       <v-spacer></v-spacer>
       <v-text-field
@@ -25,18 +23,14 @@
         <template v-slot:activator="{ on: menu }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn icon class="mr-7" v-on="{ ...tooltip, ...menu }"
-                ><v-icon size="25">mdi-video-plus</v-icon></v-btn
-              >
+              <v-btn icon class="mr-7" v-on="{ ...tooltip, ...menu }"><v-icon size="25">mdi-video-plus</v-icon></v-btn>
             </template>
             <span>Create a video and more</span>
           </v-tooltip>
         </template>
         <v-list>
           <v-list-item router to="/studio">
-            <v-list-item-icon class="mr-3"
-              ><v-icon>mdi-play-box-outline</v-icon></v-list-item-icon
-            >
+            <v-list-item-icon class="mr-3"><v-icon>mdi-play-box-outline</v-icon></v-list-item-icon>
             <v-list-item-title>Upload video</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -82,22 +76,14 @@
                 </v-avatar>
                 <template v-else>
                   <v-avatar color="red">
-                    <span class="white--text headline">
-                      {{
-                        currentUser.channelName.split('')[0].toUpperCase()
-                      }}</span
-                    >
+                    <span class="white--text headline"> {{ currentUser.channelName.split('')[0].toUpperCase() }}</span>
                   </v-avatar>
                 </template>
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title class="text-capitalize">{{
-                  currentUser.channelName
-                }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  currentUser.email
-                }}</v-list-item-subtitle>
+                <v-list-item-title class="text-capitalize">{{ currentUser.channelName }}</v-list-item-title>
+                <v-list-item-subtitle>{{ currentUser.email }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -105,10 +91,7 @@
           <v-divider></v-divider>
 
           <v-list>
-            <v-list-item
-              router
-              :to="`/channels/${$store.getters.currentUser._id}`"
-            >
+            <v-list-item router :to="`/channels/${$store.getters.currentUser._id}`">
               <v-list-item-icon>
                 <v-icon>mdi-account-box</v-icon>
               </v-list-item-icon>
@@ -145,30 +128,21 @@
               'hidden-lg-and-up': $route.name === 'Watch' ? false : true,
             }"
           >
-            <v-app-bar-nav-icon
-              class="mr-5"
-              @click="drawer = !drawer"
-            ></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon class="mr-5" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="font-weight-bold">VueTube</v-toolbar-title>
           </v-list-item>
           <v-divider class="hidden-lg-and-up"></v-divider>
           <div v-for="parentItem in items" :key="parentItem.header">
-            <v-subheader
-              v-if="parentItem.header"
-              class="pl-3 py-4 subtitle-1 font-weight-bold text-uppercase"
-              >{{ parentItem.header }}</v-subheader
-            >
+            <v-subheader v-if="parentItem.header" class="pl-3 py-4 subtitle-1 font-weight-bold text-uppercase">{{
+              parentItem.header
+            }}</v-subheader>
             <v-list-item
               v-for="(item, i) in parentItem.header === 'Subscriptions'
                 ? items[2].pages.slice(0, channelLength)
                 : parentItem.pages"
               :key="item.title"
               class="mb-0"
-              :to="
-                parentItem.header === 'Subscriptions'
-                  ? '/channels/' + item.channelId._id
-                  : item.link
-              "
+              :to="parentItem.header === 'Subscriptions' ? '/channels/' + item.channelId._id : item.link"
               exact
               active-class="active-item"
             >
@@ -177,11 +151,7 @@
               </v-list-item-icon>
               <v-list-item-avatar v-else class="mr-5">
                 {{ i }}
-                <v-avatar
-                  v-if="
-                    item.channelId.photoUrl !== 'no-photo.jpg' && item.channelId
-                  "
-                >
+                <v-avatar v-if="item.channelId.photoUrl !== 'no-photo.jpg' && item.channelId">
                   <img
                     :src="`${getUrl}/uploads/avatars/${item.channelId.photoUrl}`"
                     :alt="`${item.channelId.channelName} avatar`"
@@ -190,61 +160,36 @@
                 <template v-else>
                   <v-avatar color="red">
                     <span class="white--text headline">
-                      {{
-                        item.channelId.channelName.split('')[0].toUpperCase()
-                      }}</span
+                      {{ item.channelId.channelName.split('')[0].toUpperCase() }}</span
                     >
                   </v-avatar>
                 </template>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title class="font-weight-medium subtitle-2">{{
-                  parentItem.header === 'Subscriptions'
-                    ? item.channelId.channelName
-                    : item.title
+                  parentItem.header === 'Subscriptions' ? item.channelId.channelName : item.title
                 }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
             <v-btn
-              v-if="
-                parentItem.header === 'Subscriptions' &&
-                isAuthenticated &&
-                items[2].length > 0
-              "
+              v-if="parentItem.header === 'Subscriptions' && isAuthenticated && items[2].length > 0"
               id="showBtn"
               block
               text
               class="text-none"
               @click="moreChannels"
             >
-              <v-icon>{{
-                channelLength === 3 ? 'mdi-chevron-down' : 'mdi-chevron-up'
-              }}</v-icon>
-              {{
-                channelLength === 3
-                  ? `Show ${items[2].pages.length - 3} more `
-                  : 'Show less'
-              }}</v-btn
+              <v-icon>{{ channelLength === 3 ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+              {{ channelLength === 3 ? `Show ${items[2].pages.length - 3} more ` : 'Show less' }}</v-btn
             >
 
-            <v-divider
-              v-if="parentItem.header !== false"
-              class="mt-2 mb-2"
-            ></v-divider>
+            <v-divider v-if="parentItem.header !== false" class="mt-2 mb-2"></v-divider>
           </div>
 
           <span v-for="link in links" :key="link.text">
             <span v-if="link.text === 'Terms'" class="mb-2 d-block"> </span>
-            <v-btn
-              href
-              router
-              :to="link.link"
-              text
-              class="text-capitalize px-1"
-              small
-              >{{ link.text }}</v-btn
-            >
+            <v-btn href router :to="link.link" text class="text-capitalize px-1" small>{{ link.text }}</v-btn>
           </span>
         </v-list>
       </div>
@@ -382,10 +327,7 @@
           searchText: this.searchText,
         }
 
-        if (this.isAuthenticated)
-          await HistoryService.createHistory(data).catch((err) =>
-            console.log(err)
-          )
+        if (this.isAuthenticated) await HistoryService.createHistory(data).catch((err) => console.log(err))
 
         this.$router.push({
           name: 'Search',
@@ -393,15 +335,14 @@
         })
       },
       async getSubscribedChannels() {
-        const channels = await SubscriptionService.getSubscribedChannels(
-          this.currentUser._id
-        ).catch((err) => console.log(err))
+        const channels = await SubscriptionService.getSubscribedChannels(this.currentUser._id).catch((err) =>
+          console.log(err),
+        )
         this.items[2].pages = channels.data.data
         this.channelLength = 3
       },
       moreChannels() {
-        if (this.channelLength === 3)
-          this.channelLength = this.items[2].pages.length
+        if (this.channelLength === 3) this.channelLength = this.items[2].pages.length
         else this.channelLength = 3
       },
       signOut() {
@@ -458,10 +399,8 @@
       backface-visibility: hidden;
       -webkit-transform: rotate3d(0, 0, 0, 0);
       transform: rotate3d(0, 0, 0, 0);
-      -webkit-transition: background-color 100ms ease-out, margin 100ms ease-out,
-        height 100ms ease-out;
-      transition: background-color 100ms ease-out, margin 100ms ease-out,
-        height 100ms ease-out;
+      -webkit-transition: background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out;
+      transition: background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out;
 
       margin: 5px 5px 5px 0;
       border-radius: 20px;

@@ -6,20 +6,11 @@
           <v-row class="justify-space-between px-4 pt-6 pb-12">
             <v-col cols="12" sm="12" md="6">
               <v-card-title class="text-center">VueTube</v-card-title>
-              <v-card-subtitle class="mb-5"
-                >Create your VueTube account</v-card-subtitle
-              >
+              <v-card-subtitle class="mb-5">Create your VueTube account</v-card-subtitle>
               <v-card-text>
                 <ValidationObserver ref="form" v-slot="{ handleSubmit, reset }">
-                  <form
-                    @submit.prevent="handleSubmit(signUp)"
-                    @reset.prevent="reset"
-                  >
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Email"
-                      rules="required|email"
-                    >
+                  <form @submit.prevent="handleSubmit(signUp)" @reset.prevent="reset">
+                    <ValidationProvider v-slot="{ errors }" name="Email" rules="required|email">
                       <v-text-field
                         v-model="email"
                         :error-messages="errors"
@@ -29,11 +20,7 @@
                         dense
                       ></v-text-field>
                     </ValidationProvider>
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Channel Name"
-                      rules="required|min:3"
-                    >
+                    <ValidationProvider v-slot="{ errors }" name="Channel Name" rules="required|min:3">
                       <v-text-field
                         v-model="channelName"
                         :error-messages="errors"
@@ -44,11 +31,7 @@
                     </ValidationProvider>
                     <v-row>
                       <v-col cols="6">
-                        <ValidationProvider
-                          v-slot="{ errors }"
-                          name="Password"
-                          rules="required|password:@confirm"
-                        >
+                        <ValidationProvider v-slot="{ errors }" name="Password" rules="required|password:@confirm">
                           <v-text-field
                             v-model="password"
                             type="password"
@@ -60,11 +43,7 @@
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="6">
-                        <ValidationProvider
-                          v-slot="{ errors }"
-                          name="confirm"
-                          rules="required"
-                        >
+                        <ValidationProvider v-slot="{ errors }" name="confirm" rules="required">
                           <v-text-field
                             v-model="confirmPassword"
                             type="password"
@@ -77,22 +56,10 @@
                       </v-col>
                     </v-row>
                     <div class="mt-6 d-flex justify-space-between">
-                      <v-btn
-                        text
-                        small
-                        class="pl-0 text-capitalize"
-                        color="primary"
-                        router
-                        to="signin"
+                      <v-btn text small class="pl-0 text-capitalize" color="primary" router to="signin"
                         >Sign in instead</v-btn
                       >
-                      <v-btn
-                        type="submit"
-                        class="primary"
-                        :loading="loading"
-                        depressed
-                        >Sign up</v-btn
-                      >
+                      <v-btn type="submit" class="primary" :loading="loading" depressed>Sign up</v-btn>
                     </div>
                   </form>
                 </ValidationObserver>
@@ -118,20 +85,8 @@
                     transform="translate(-62.24207 -126.55043)"
                     fill="#d0cde1"
                   />
-                  <ellipse
-                    cx="536"
-                    cy="625.89913"
-                    rx="536"
-                    ry="21"
-                    fill="#d0cde1"
-                  />
-                  <rect
-                    x="184"
-                    y="248.03055"
-                    width="612"
-                    height="364.87"
-                    fill="#3f3d56"
-                  />
+                  <ellipse cx="536" cy="625.89913" rx="536" ry="21" fill="#d0cde1" />
+                  <rect x="184" y="248.03055" width="612" height="364.87" fill="#3f3d56" />
                   <path
                     d="M397.70209,374.581a146.35424,146.35424,0,0,1-146.32,143.97c-1.72,0-3.43-.03-5.14-.09V374.581Z"
                     transform="translate(-62.24207 -126.55043)"
@@ -147,30 +102,9 @@
                     transform="translate(-62.24207 -126.55043)"
                     fill="#2b81d6"
                   />
-                  <rect
-                    x="279.45927"
-                    y="380.6149"
-                    width="422.14211"
-                    height="36.06239"
-                    rx="18.03118"
-                    fill="#fff"
-                  />
-                  <rect
-                    x="279.45927"
-                    y="451.67903"
-                    width="422.14211"
-                    height="36.06239"
-                    rx="18.03118"
-                    fill="#fff"
-                  />
-                  <rect
-                    x="553.59711"
-                    y="522.74315"
-                    width="148.00427"
-                    height="36.06239"
-                    rx="18.03118"
-                    fill="#fff"
-                  />
+                  <rect x="279.45927" y="380.6149" width="422.14211" height="36.06239" rx="18.03118" fill="#fff" />
+                  <rect x="279.45927" y="451.67903" width="422.14211" height="36.06239" rx="18.03118" fill="#fff" />
+                  <rect x="553.59711" y="522.74315" width="148.00427" height="36.06239" rx="18.03118" fill="#fff" />
                   <path
                     d="M955.29387,238.67007s16.82875,6.54451,17.76368,28.04791-4.67465,81.33893-4.67465,81.33893,20.56846,29.91777,4.67465,38.33214-17.76368-33.65749-17.76368-33.65749l-18.6986-88.81837S947.81443,237.73514,955.29387,238.67007Z"
                     transform="translate(-62.24207 -126.55043)"
@@ -196,12 +130,7 @@
                     transform="translate(-62.24207 -126.55043)"
                     fill="#2f2e41"
                   />
-                  <circle
-                    cx="733.17873"
-                    cy="44.80466"
-                    r="31.78763"
-                    fill="#a0616a"
-                  />
+                  <circle cx="733.17873" cy="44.80466" r="31.78763" fill="#a0616a" />
                   <path
                     d="M817.85913,167.61537s24.30818,20.56847,41.13693,20.56847S834.68787,226.516,834.68787,226.516l-36.46228-32.72256Z"
                     transform="translate(-62.24207 -126.55043)"
@@ -267,9 +196,7 @@
 
         if (!data) return
 
-        const user = await this.$store
-          .dispatch('getCurrentUser', data.token)
-          .catch((err) => console.log(err))
+        const user = await this.$store.dispatch('getCurrentUser', data.token).catch((err) => console.log(err))
 
         if (!user) return
         this.loading = false

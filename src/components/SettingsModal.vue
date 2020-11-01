@@ -1,11 +1,5 @@
 <template>
-  <v-dialog
-    id="settings"
-    v-model="dialog"
-    persistent
-    transition="fab-transition"
-    max-width="800"
-  >
+  <v-dialog id="settings" v-model="dialog" persistent transition="fab-transition" max-width="800">
     <v-card tile>
       <div id="modal-header" class="d-flex justify-space-between mb-5">
         <v-card-title class="py-3">Settings</v-card-title>
@@ -30,19 +24,9 @@
             class="pt-0"
           >
             <h3 class="mb-6 mt-0 pt-0">Personal Information</h3>
-            <ValidationObserver
-              ref="personalInfoForm"
-              v-slot="{ handleSubmit, reset }"
-            >
-              <form
-                @submit.prevent="handleSubmit(submit)"
-                @reset.prevent="reset"
-              >
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Channel Name"
-                  rules="required|min:3"
-                >
+            <ValidationObserver ref="personalInfoForm" v-slot="{ handleSubmit, reset }">
+              <form @submit.prevent="handleSubmit(submit)" @reset.prevent="reset">
+                <ValidationProvider v-slot="{ errors }" name="Channel Name" rules="required|min:3">
                   <v-text-field
                     v-model="formData.channelName"
                     :error-messages="errors"
@@ -51,11 +35,7 @@
                     dense
                   ></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="email"
-                  rules="required|email"
-                >
+                <ValidationProvider v-slot="{ errors }" name="email" rules="required|email">
                   <v-text-field
                     v-model="formData.email"
                     :error-messages="errors"
@@ -65,35 +45,17 @@
                   ></v-text-field>
                 </ValidationProvider>
 
-                <v-btn
-                  :loading="loading.personalInfo"
-                  type="submit"
-                  class="primary"
-                  depressed
-                  >Submit</v-btn
-                >
+                <v-btn :loading="loading.personalInfo" type="submit" class="primary" depressed>Submit</v-btn>
               </form>
             </ValidationObserver>
 
             <h3 class="mb-6 mt-6">Change Password</h3>
-            <ValidationObserver
-              ref="passwordForm"
-              v-slot="{ handleSubmit, reset }"
-            >
-              <form
-                @submit.prevent="handleSubmit(submitPassword)"
-                @reset.prevent="reset"
-              >
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Current password"
-                  rules="required|min:5"
-                >
+            <ValidationObserver ref="passwordForm" v-slot="{ handleSubmit, reset }">
+              <form @submit.prevent="handleSubmit(submitPassword)" @reset.prevent="reset">
+                <ValidationProvider v-slot="{ errors }" name="Current password" rules="required|min:5">
                   <v-text-field
                     v-model="formData.currentPassword"
-                    :append-icon="
-                      showCurrentPassword ? 'mdi-eye' : 'mdi-eye-off'
-                    "
+                    :append-icon="showCurrentPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     :error-messages="errors"
                     :type="showCurrentPassword ? 'text' : 'password'"
                     name="Current password"
@@ -105,11 +67,7 @@
                     @click:append="showCurrentPassword = !showCurrentPassword"
                   ></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="New password"
-                  rules="required|min:5"
-                >
+                <ValidationProvider v-slot="{ errors }" name="New password" rules="required|min:5">
                   <v-text-field
                     v-model="formData.newPassword"
                     :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -125,24 +83,11 @@
                   ></v-text-field>
                 </ValidationProvider>
 
-                <v-btn
-                  :loading="loading.password"
-                  type="submit"
-                  class="primary"
-                  depressed
-                  >Submit</v-btn
-                >
+                <v-btn :loading="loading.password" type="submit" class="primary" depressed>Submit</v-btn>
               </form>
             </ValidationObserver>
           </v-col>
-          <v-col
-            order-sm="1"
-            cols="12"
-            sm="12"
-            md="4"
-            lg="4"
-            class="text-center"
-          >
+          <v-col order-sm="1" cols="12" sm="12" md="4" lg="4" class="text-center">
             <v-btn text @click="toggleShow">Upload Avatar</v-btn>
             <my-upload
               v-model="show"
@@ -159,11 +104,7 @@
               @crop-upload-success="cropUploadSuccess"
               @crop-upload-fail="cropUploadFail"
             ></my-upload>
-            <v-responsive
-              width="230"
-              class="mx-auto"
-              style="border-radius: 50%"
-            >
+            <v-responsive width="230" class="mx-auto" style="border-radius: 50%">
               <div
                 v-if="$store.getters.currentUser.photoUrl == 'no-photo.jpg'"
                 id="settings-image-placeholder"
@@ -202,12 +143,7 @@
         interval: {},
         value: 0,
         show: false,
-        rules: [
-          (value) =>
-            !value ||
-            value.size < 5000000 ||
-            'Video size should be less than 5 MB!',
-        ],
+        rules: [(value) => !value || value.size < 5000000 || 'Video size should be less than 5 MB!'],
         categories: ['People', 'Technology', 'Fashion'],
         visibilty: ['Public', 'Private'],
         formData: {
@@ -260,8 +196,7 @@
 
         if (!user) return
         if (
-          this.formData.channelName !==
-            this.$store.getters.currentUser.channelName ||
+          this.formData.channelName !== this.$store.getters.currentUser.channelName ||
           this.formData.email !== this.$store.getters.currentUser.email
         ) {
           this.$store.dispatch('signOut')

@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    persistent
-    transition="fab-transition"
-    max-width="1000"
-  >
+  <v-dialog v-model="dialog" persistent transition="fab-transition" max-width="1000">
     <v-card>
       <div id="modal-header" class="d-flex justify-space-between mb-5">
         <v-card-title class="py-3">Upload Video</v-card-title>
@@ -22,23 +17,12 @@
       >
         <div v-if="!uploading" class="text-center">
           <div>
-            <v-btn
-              icon
-              class="grey lighten-2 mb-4"
-              style="height: 104px; width: 104px"
-              @click="selectFile"
-              ><v-icon x-large class="grey--text text--darken-1"
-                >mdi-upload</v-icon
-              ></v-btn
+            <v-btn icon class="grey lighten-2 mb-4" style="height: 104px; width: 104px" @click="selectFile"
+              ><v-icon x-large class="grey--text text--darken-1">mdi-upload</v-icon></v-btn
             >
           </div>
 
-          <ValidationProvider
-            v-slot="{ errors }"
-            ref="provider"
-            rules="required|size:5000"
-            name="file"
-          >
+          <ValidationProvider v-slot="{ errors }" ref="provider" rules="required|size:5000" name="file">
             <v-file-input
               ref="fileInput"
               v-model="selectedFile"
@@ -58,14 +42,7 @@
           >
         </div>
 
-        <v-progress-circular
-          v-else
-          :rotate="360"
-          :size="100"
-          :width="15"
-          :value="value"
-          color="teal"
-        >
+        <v-progress-circular v-else :rotate="360" :size="100" :width="15" :value="value" color="teal">
           {{ value }}
         </v-progress-circular>
       </v-card-text>
@@ -85,11 +62,7 @@
           >
             <ValidationObserver ref="form">
               <form @submit.prevent="submit">
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Title"
-                  rules="required|min:3"
-                >
+                <ValidationProvider v-slot="{ errors }" name="Title" rules="required|min:3">
                   <v-text-field
                     v-model="formData.title"
                     :error-messages="errors"
@@ -101,11 +74,7 @@
                     max-length="100"
                   ></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Description"
-                  rules="required|min:3"
-                >
+                <ValidationProvider v-slot="{ errors }" name="Description" rules="required|min:3">
                   <v-textarea
                     v-model="formData.description"
                     filled
@@ -119,11 +88,7 @@
                     row-height="20"
                   ></v-textarea>
                 </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Visibilty"
-                  rules="required|min:3"
-                >
+                <ValidationProvider v-slot="{ errors }" name="Visibilty" rules="required|min:3">
                   <v-select
                     v-model="formData.visibilty"
                     :items="visibilty"
@@ -132,11 +97,7 @@
                     label="Visibilty"
                   ></v-select>
                 </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Cateogry"
-                  rules="required|min:3"
-                >
+                <ValidationProvider v-slot="{ errors }" name="Cateogry" rules="required|min:3">
                   <v-select
                     v-model="formData.category"
                     :items="categoriesTitles"
@@ -148,25 +109,12 @@
                 </ValidationProvider>
 
                 <div class="mt-6 d-flex justify-space-between">
-                  <v-btn
-                    :loading="submitLoading"
-                    type="submit"
-                    class="primary"
-                    depressed
-                    >Submit</v-btn
-                  >
+                  <v-btn :loading="submitLoading" type="submit" class="primary" depressed>Submit</v-btn>
                 </div>
               </form>
             </ValidationObserver>
           </v-col>
-          <v-col
-            order-sm="1"
-            cols="12"
-            sm="12"
-            md="4"
-            lg="4"
-            class="text-center"
-          >
+          <v-col order-sm="1" cols="12" sm="12" md="4" lg="4" class="text-center">
             <v-btn text @click="toggleShow">Upload Thumbnails</v-btn>
             <my-upload
               v-model="show"
@@ -184,24 +132,16 @@
               <div v-if="!imgDataUrl" id="image-placeholder" class="px-12">
                 <v-icon>mdi-image-plus</v-icon>
               </div>
-              <v-img
-                v-else
-                max-width="330"
-                height="350"
-                :src="imgDataUrl"
-              ></v-img>
+              <v-img v-else max-width="330" height="350" :src="imgDataUrl"></v-img>
             </v-responsive>
-            <p v-if="imgDataUrl == ''" class="red--text">
-              Please upload thumbnail
-            </p>
+            <p v-if="imgDataUrl == ''" class="red--text">Please upload thumbnail</p>
           </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions v-if="!uploaded">
         <p class="text-center grey--text caption px-12 px-xs-0">
-          By submitting your videos to YouTube, you acknowledge that you agree
-          to YouTube's Terms of Service and Community Guidelines. Please be sure
-          not to violate others' copyright or privacy rights. Learn more
+          By submitting your videos to YouTube, you acknowledge that you agree to YouTube's Terms of Service and
+          Community Guidelines. Please be sure not to violate others' copyright or privacy rights. Learn more
         </p>
       </v-card-actions>
     </v-card>
@@ -217,7 +157,9 @@
     components: {
       myUpload,
     },
-    props: ['openDialog'],
+    props: {
+      openDialog: Boolean,
+    },
     data: function () {
       return {
         // dialog: this.openDialog ? this.openDialog : false,
@@ -229,12 +171,7 @@
         interval: {},
         value: 0,
         show: false,
-        rules: [
-          (value) =>
-            !value ||
-            value.size > 5000000 ||
-            `Video size should be less than 5 MB!, ${value.size}`,
-        ],
+        rules: [(value) => !value || value.size > 5000000 || `Video size should be less than 5 MB!, ${value.size}`],
         categoriesTitles: [],
         categories: [],
         visibilty: ['Public', 'Private'],
@@ -272,9 +209,7 @@
 
         let video = await VideoService.uploadVideo(fd, {
           onUploadProgress: (uploadEvent) => {
-            this.value = Math.round(
-              (uploadEvent.loaded / uploadEvent.total) * 100
-            )
+            this.value = Math.round((uploadEvent.loaded / uploadEvent.total) * 100)
           },
         })
           .catch((err) => {
@@ -306,9 +241,7 @@
       async submit() {
         if (this.imgDataUrl == '') return
         this.submitLoading = true
-        this.formData.category = this.categories.find(
-          (category) => category.title === this.formData.category
-        )._id
+        this.formData.category = this.categories.find((category) => category.title === this.formData.category)._id
 
         const video = await VideoService.updateVideo(this.formData.id, {
           title: this.formData.title,

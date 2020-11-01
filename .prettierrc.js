@@ -7,4 +7,5 @@ module.exports = {
   endOfLine: 'lf',
   trailingComma: 'all',
   bracketSpacing: true,
+  printWidth: 120,
 }

@@ -129,10 +129,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     next('/')
-  } else if (
-    to.matched.some((record) => record.meta.requiresVisitor) &&
-    loggedIn
-  ) {
+  } else if (to.matched.some((record) => record.meta.requiresVisitor) && loggedIn) {
     next('/')
   } else {
     next()

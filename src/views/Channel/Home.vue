@@ -1,19 +1,12 @@
 <template>
   <div id="channel-home">
-    <v-parallax
-      height="230"
-      src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-    ></v-parallax>
+    <v-parallax height="230" src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
     <div class="nav-bgcolor">
       <div id="channel-header">
         <v-container class="py-0">
           <v-row class="justify-space-between">
             <v-col cols="12" sm="5" md="5" lg="5" offset-md="1">
-              <v-skeleton-loader
-                type="list-item-avatar-two-line"
-                :loading="loading"
-                class="mr-1"
-              >
+              <v-skeleton-loader type="list-item-avatar-two-line" :loading="loading" class="mr-1">
                 <v-card class="transparent" flat>
                   <v-list-item three-line>
                     <v-list-item-avatar size="80">
@@ -23,20 +16,12 @@
                       ></v-img>
 
                       <v-avatar v-else color="red" size="60">
-                        <span class="white--text headline">
-                          {{
-                            channel.channelName.split('')[0].toUpperCase()
-                          }}</span
-                        >
+                        <span class="white--text headline"> {{ channel.channelName.split('')[0].toUpperCase() }}</span>
                       </v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content class="align-self-auto">
-                      <v-list-item-title class="headline mb-1">{{
-                        channel.channelName
-                      }}</v-list-item-title>
-                      <v-list-item-subtitle
-                        >{{ channel.subscribers }} subscribers
-                      </v-list-item-subtitle>
+                      <v-list-item-title class="headline mb-1">{{ channel.channelName }}</v-list-item-title>
+                      <v-list-item-subtitle>{{ channel.subscribers }} subscribers </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-card>
@@ -78,13 +63,7 @@
         </v-container>
       </div>
       <v-card flat class="transparent">
-        <v-tabs
-          v-model="tab"
-          background-color="transparent"
-          show-arrows
-          centered
-          center-active
-        >
+        <v-tabs v-model="tab" background-color="transparent" show-arrows centered center-active>
           <v-tab v-for="(item, i) in items" :key="i">
             {{ item }}
           </v-tab>
@@ -97,16 +76,8 @@
                 <v-card-title>Uploads</v-card-title>
                 <!-- <v-sheet class="mx-auto"> -->
                 <v-slide-group class="pa-4" multiple show-arrows>
-                  <v-slide-item
-                    v-for="(video, i) in loading ? 5 : videos.data"
-                    :key="i"
-                  >
-                    <v-skeleton-loader
-                      type="card-avatar"
-                      :loading="loading"
-                      width="250px"
-                      class="mr-1"
-                    >
+                  <v-slide-item v-for="(video, i) in loading ? 5 : videos.data" :key="i">
+                    <v-skeleton-loader type="card-avatar" :loading="loading" width="250px" class="mr-1">
                       <VideoCard
                         :card="{ maxWidth: 250, type: 'noAvatar' }"
                         :video="video"
@@ -131,11 +102,7 @@
                     class="mx-xs-auto"
                   >
                     <v-skeleton-loader type="card-avatar" :loading="loading">
-                      <VideoCard
-                        :card="{ maxWidth: 350 }"
-                        :video="video"
-                        :channel="video.userId"
-                      ></VideoCard>
+                      <VideoCard :card="{ maxWidth: 350 }" :video="video" :channel="video.userId"></VideoCard>
                     </v-skeleton-loader>
                   </v-col>
                 </v-row>
@@ -145,11 +112,7 @@
         </v-container>
       </v-card>
     </div>
-    <SigninModal
-      :open-modal="signinDialog"
-      :details="details"
-      @closeModal="signinDialog = false"
-    />
+    <SigninModal :open-modal="signinDialog" :details="details" @closeModal="signinDialog = false" />
   </div>
 </template>
 
@@ -164,6 +127,11 @@
   import SigninModal from '@/components/SigninModal'
 
   export default {
+    name: 'Home',
+    components: {
+      VideoCard,
+      SigninModal,
+    },
     data: () => ({
       tab: null,
       loading: false,
@@ -180,10 +148,6 @@
     }),
     computed: {
       ...mapGetters(['isAuthenticated', 'currentUser']),
-    },
-    components: {
-      VideoCard,
-      SigninModal,
     },
     mounted() {
       this.getChannel(this.$route.params.id)

@@ -5,9 +5,7 @@
         <v-row align="center">
           <v-col class="grow">
             <div class="title">Error!</div>
-            <div>
-              Something went wrong, but don’t fret — let’s give it another shot.
-            </div>
+            <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
           </v-col>
           <v-col class="shrink">
             <v-btn @click="getVideos">Take action</v-btn>
@@ -17,21 +15,9 @@
 
       <main v-else>
         <v-row>
-          <v-col
-            v-for="(video, i) in loading ? 12 : videos"
-            :key="i"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-            class="mx-xs-auto"
-          >
+          <v-col v-for="(video, i) in loading ? 12 : videos" :key="i" cols="12" sm="6" md="4" lg="3" class="mx-xs-auto">
             <v-skeleton-loader type="card-avatar" :loading="loading">
-              <VideoCard
-                :card="{ maxWidth: 350 }"
-                :video="video"
-                :channel="video.userId"
-              ></VideoCard>
+              <VideoCard :card="{ maxWidth: 350 }" :video="video" :channel="video.userId"></VideoCard>
             </v-skeleton-loader>
           </v-col>
           <v-col v-if="videos.length === 0 && !loading" class="text-center">
@@ -40,10 +26,7 @@
           <v-col cols="12" sm="12" md="12" lg="12">
             <InfiniteLoading @infinite="getVideos">
               <div slot="spinner">
-                <v-progress-circular
-                  indeterminate
-                  color="red"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="red"></v-progress-circular>
               </div>
               <div slot="no-results"></div>
               <span slot="no-more"></span>
@@ -52,10 +35,7 @@
                   <v-row align="center">
                     <v-col class="grow">
                       <div class="title">Error!</div>
-                      <div>
-                        Something went wrong, but don’t fret — let’s give it
-                        another shot.
-                      </div>
+                      <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
                     </v-col>
                     <v-col class="shrink">
                       <v-btn @click="trigger">Take action</v-btn>

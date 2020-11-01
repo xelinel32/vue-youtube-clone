@@ -1,10 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    persistent
-    transition="fab-transition"
-    max-width="800"
-  >
+  <v-dialog v-model="dialog" persistent transition="fab-transition" max-width="800">
     <v-card tile>
       <div class="d-flex justify-space-between mb-5">
         <v-card-title class="py-3">Subscribers</v-card-title>
@@ -17,26 +12,17 @@
       <v-card-text class="px-3">
         <v-row>
           <v-col cols="12" sm="12" md="12" lg="12" class="pt-0 px-0">
-            <v-data-table
-              :headers="headers"
-              :items="subscribers"
-              :loading="loading"
-              sort-by="calories"
-            >
+            <v-data-table :headers="headers" :items="subscribers" :loading="loading" sort-by="calories">
               <template v-slot:item.channel="{ item }">
                 <v-avatar size="35" color="red" class="white--text">
-                  <template
-                    v-if="item.subscriberId.photoUrl !== 'no-photo.jpg'"
-                  >
+                  <template v-if="item.subscriberId.photoUrl !== 'no-photo.jpg'">
                     <img
                       :src="`${getUrl}/uploads/avatars/${item.subscriberId.photoUrl}`"
                       :alt="`${item.subscriberId.photoUrl} avatar`"
                     />
                   </template>
                   <span v-else class="headline">
-                    {{
-                      item.subscriberId.channelName.split('')[0].toUpperCase()
-                    }}
+                    {{ item.subscriberId.channelName.split('')[0].toUpperCase() }}
                   </span>
                 </v-avatar>
                 <span class="pl-2">{{ item.subscriberId.channelName }}</span>
@@ -68,7 +54,9 @@
 
   export default {
     name: 'SubscribersModal',
-    props: ['openDialog'],
+    props: {
+      openDialog: Boolean,
+    },
     data: function () {
       return {
         headers: [

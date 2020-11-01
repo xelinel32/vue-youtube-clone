@@ -2,19 +2,13 @@
   <div id="video-details" class="pa-4">
     <v-container>
       <!-- <div class="d-flex justify-space-between mb-5"> -->
-      <v-btn text small class="pl-0" @click="$router.go(-1)"
-        ><v-icon left>mdi-arrow-left</v-icon> Channel videos</v-btn
-      >
+      <v-btn text small class="pl-0" @click="$router.go(-1)"><v-icon left>mdi-arrow-left</v-icon> Channel videos</v-btn>
       <h2 class="mt-5">Video details</h2>
       <v-row>
         <v-col cols="8">
           <ValidationObserver ref="form" v-slot="{ handleSubmit, reset }">
             <form @submit.prevent="handleSubmit(submit)" @reset.prevent="reset">
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="Title"
-                rules="required|min:3"
-              >
+              <ValidationProvider v-slot="{ errors }" name="Title" rules="required|min:3">
                 <v-text-field
                   v-model="formData.title"
                   :loading="inputLoading"
@@ -27,11 +21,7 @@
                   max-length="100"
                 ></v-text-field>
               </ValidationProvider>
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="Description"
-                rules="required|min:3"
-              >
+              <ValidationProvider v-slot="{ errors }" name="Description" rules="required|min:3">
                 <v-textarea
                   v-model="formData.description"
                   :loading="inputLoading"
@@ -46,11 +36,7 @@
                   row-height="20"
                 ></v-textarea>
               </ValidationProvider>
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="Visibilty"
-                rules="required|oneOf:private,public"
-              >
+              <ValidationProvider v-slot="{ errors }" name="Visibilty" rules="required|oneOf:private,public">
                 <v-select
                   v-model="formData.visibility"
                   :loading="inputLoading"
@@ -61,11 +47,7 @@
                   :value="formData.visibility"
                 ></v-select>
               </ValidationProvider>
-              <ValidationProvider
-                v-slot="{ errors }"
-                name="Cateogry"
-                rules="required|min:3"
-              >
+              <ValidationProvider v-slot="{ errors }" name="Cateogry" rules="required|min:3">
                 <v-select
                   v-model="formData.category"
                   :loading="categoryLoading"
@@ -77,13 +59,7 @@
               </ValidationProvider>
 
               <div class="mt-6 d-flex justify-space-between">
-                <v-btn
-                  :loading="submitLoading"
-                  type="submit"
-                  class="primary"
-                  depressed
-                  >Submit</v-btn
-                >
+                <v-btn :loading="submitLoading" type="submit" class="primary" depressed>Submit</v-btn>
               </div>
             </form>
           </ValidationObserver>
@@ -132,12 +108,7 @@
         categoryLoading: false,
         value: 0,
         show: false,
-        rules: [
-          (value) =>
-            !value ||
-            value.size < 5000000 ||
-            'Video size should be less than 5 MB!',
-        ],
+        rules: [(value) => !value || value.size < 5000000 || 'Video size should be less than 5 MB!'],
         categoriesTitles: [],
         categories: [],
         visibility: ['public', 'private'],
@@ -182,9 +153,7 @@
       async submit() {
         // if (this.$route.name === 'Dashboard')
         this.submitLoading = true
-        this.formData.category = this.categories.find(
-          (category) => category.title === this.formData.category
-        )._id
+        this.formData.category = this.categories.find((category) => category.title === this.formData.category)._id
         const video = await VideoService.updateVideo(this.$route.params.id, {
           title: this.formData.title,
           description: this.formData.description,

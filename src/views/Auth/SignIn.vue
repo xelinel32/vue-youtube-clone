@@ -8,34 +8,13 @@
             <v-card-subtitle class="mb-5">Sign in</v-card-subtitle>
             <v-card-text>
               <ValidationObserver ref="form" v-slot="{ handleSubmit, reset }">
-                <form
-                  @submit.prevent="handleSubmit(signin)"
-                  @reset.prevent="reset"
-                >
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    name="Email"
-                    rules="required|email"
-                  >
-                    <v-text-field
-                      v-model="email"
-                      :error-messages="errors"
-                      label="Email"
-                      outlined
-                    ></v-text-field>
+                <form @submit.prevent="handleSubmit(signin)" @reset.prevent="reset">
+                  <ValidationProvider v-slot="{ errors }" name="Email" rules="required|email">
+                    <v-text-field v-model="email" :error-messages="errors" label="Email" outlined></v-text-field>
                   </ValidationProvider>
-                  <ValidationProvider
-                    v-slot="{ errors }"
-                    name="Password"
-                    rules="required"
-                  >
+                  <ValidationProvider v-slot="{ errors }" name="Password" rules="required">
                     <p class="ma-0 text-right">
-                      <v-btn
-                        text
-                        small
-                        class="pl-0 text-capitalize"
-                        color="primary"
-                        href="true"
+                      <v-btn text small class="pl-0 text-capitalize" color="primary" href="true"
                         >Forget Password?</v-btn
                       >
                     </p>
@@ -48,22 +27,10 @@
                     ></v-text-field>
                   </ValidationProvider>
                   <div class="mt-6 d-flex justify-space-between">
-                    <v-btn
-                      text
-                      small
-                      class="pl-0 text-capitalize"
-                      color="primary"
-                      router
-                      to="signup"
+                    <v-btn text small class="pl-0 text-capitalize" color="primary" router to="signup"
                       >Create account</v-btn
                     >
-                    <v-btn
-                      type="submit"
-                      class="primary"
-                      :loading="loading"
-                      depressed
-                      >Sign in</v-btn
-                    >
+                    <v-btn type="submit" class="primary" :loading="loading" depressed>Sign in</v-btn>
                   </div>
                 </form>
               </ValidationObserver>
@@ -100,9 +67,7 @@
           })
 
         if (!data) return
-        const user = await this.$store
-          .dispatch('getCurrentUser', data.token)
-          .catch((err) => console.log(err))
+        const user = await this.$store.dispatch('getCurrentUser', data.token).catch((err) => console.log(err))
 
         if (!user) return
 

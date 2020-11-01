@@ -11,18 +11,11 @@
         ></v-img>
 
         <v-avatar v-else color="red">
-          <span class="white--text headline">
-            {{ currentUser.channelName.split('')[0].toUpperCase() }}</span
-          >
+          <span class="white--text headline"> {{ currentUser.channelName.split('')[0].toUpperCase() }}</span>
         </v-avatar>
       </v-list-item-avatar>
       <v-list-item-content class="align-self-auto">
-        <v-text-field
-          v-model="comment"
-          placeholder="Add a public comment..."
-          @click="clickTextField"
-        >
-        </v-text-field>
+        <v-text-field v-model="comment" placeholder="Add a public comment..." @click="clickTextField"> </v-text-field>
         <div v-if="showCommentBtns" class="d-inline-block text-right">
           <v-btn text @click="showCommentBtns = !showCommentBtns">Cancel</v-btn>
           <v-btn

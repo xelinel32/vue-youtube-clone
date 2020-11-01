@@ -19,7 +19,7 @@ export default () => {
         location.reload()
       }
       return Promise.reject(error)
-    }
+    },
   )
 
   return axiosInstance

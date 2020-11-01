@@ -4,15 +4,7 @@
     <router-view name="StudioNavBar"></router-view>
     <v-main
       :class="{
-        'content-bg': ![
-          'SignIn',
-          'SignUp',
-          'Dashboard',
-          'Video',
-          'Detail',
-        ].includes(this.$route.name)
-          ? true
-          : false,
+        'content-bg': !['SignIn', 'SignUp', 'Dashboard', 'Video', 'Detail'].includes(this.$route.name) ? true : false,
       }"
     >
       <router-view></router-view>

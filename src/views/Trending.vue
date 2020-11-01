@@ -11,13 +11,7 @@
           lg="10"
           class="mx-lg-0 mx-md-0 mx-sm-auto mx-auto"
         >
-          <v-skeleton-loader
-            class="mx-auto"
-            type="list-item-avatar-three-line"
-            :loading="loading"
-            tile
-            large
-          >
+          <v-skeleton-loader class="mx-auto" type="list-item-avatar-three-line" :loading="loading" tile large>
             <v-card class="card" tile flat :to="`/watch/${video._id}`">
               <v-row no-gutters>
                 <v-col class="mx-auto" cols="12" sm="8" md="5" lg="4">
@@ -38,8 +32,7 @@
 
                     <v-card-subtitle v-if="video.userId" class="pl-2 pb-0">
                       {{ video.userId.channelName }}
-                      <v-icon>mdi-circle-small</v-icon
-                      >{{ video.views }} views<v-icon>mdi-circle-small</v-icon
+                      <v-icon>mdi-circle-small</v-icon>{{ video.views }} views<v-icon>mdi-circle-small</v-icon
                       >{{ dateFormatter(video.createdAt) }}
                     </v-card-subtitle>
                     <v-card-subtitle class="pl-2 pt-0">
@@ -57,10 +50,7 @@
         <v-col cols="12" sm="12" md="12" lg="12">
           <InfiniteLoading @infinite="getVideos">
             <div slot="spinner">
-              <v-progress-circular
-                indeterminate
-                color="red"
-              ></v-progress-circular>
+              <v-progress-circular indeterminate color="red"></v-progress-circular>
             </div>
             <div slot="no-results"></div>
             <span slot="no-more"></span>
@@ -69,10 +59,7 @@
                 <v-row align="center">
                   <v-col class="grow">
                     <div class="title">Error!</div>
-                    <div>
-                      Something went wrong, but don’t fret — let’s give it
-                      another shot.
-                    </div>
+                    <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
                   </v-col>
                   <v-col class="shrink">
                     <v-btn @click="trigger">Take action</v-btn>
@@ -97,6 +84,9 @@
 
   export default {
     name: 'Trending',
+    components: {
+      InfiniteLoading,
+    },
     data: () => ({
       loading: false,
       loaded: false,
@@ -145,9 +135,6 @@
       dateFormatter(date) {
         return moment(date).fromNow()
       },
-    },
-    components: {
-      InfiniteLoading,
     },
   }
 </script>

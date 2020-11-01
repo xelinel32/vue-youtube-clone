@@ -4,12 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { required, email, max, min, size, oneOf } from 'vee-validate/dist/rules'
-import {
-  extend,
-  ValidationObserver,
-  ValidationProvider,
-  setInteractionMode,
-} from 'vee-validate'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 import Vuebar from 'vuebar'
 // import InfiniteLoading from 'vue-infinite-loading'
 

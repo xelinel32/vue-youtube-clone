@@ -2,35 +2,15 @@
   <div id="history" class="fill-height">
     <v-container fluid class="pt-0 pb-0 fill-height">
       <v-row class="fill-height">
-        <v-col
-          cols="12"
-          sm="12"
-          order="2"
-          order-sm="2"
-          order-md="1"
-          order-lg="1"
-          md="7"
-          lg="7"
-          class="pt-8 pl-8"
-        >
+        <v-col cols="12" sm="12" order="2" order-sm="2" order-md="1" order-lg="1" md="7" lg="7" class="pt-8 pl-8">
           <h1 class="title font-weight-medium pb-5">{{ historyType }}</h1>
           <template v-if="historyType == 'Watch History'">
             <template v-if="histories.length <= 0 && !loading">
               <p class="text-center body-1">No watch history yet.</p>
             </template>
             <section>
-              <div
-                v-for="(history, i) in loading ? 12 : histories"
-                :key="i"
-                class="mb-5"
-              >
-                <v-skeleton-loader
-                  class="mx-auto"
-                  type="list-item-avatar-three-line"
-                  :loading="loading"
-                  tile
-                  large
-                >
+              <div v-for="(history, i) in loading ? 12 : histories" :key="i" class="mb-5">
+                <v-skeleton-loader class="mx-auto" type="list-item-avatar-three-line" :loading="loading" tile large>
                   <v-card class="card" tile flat>
                     <v-row v-if="history.videoId" no-gutters>
                       <v-col class="mx-auto" cols="3" sm="3" md="5" lg="5">
@@ -53,12 +33,8 @@
                             </v-btn>
                           </v-card-title>
 
-                          <v-card-subtitle
-                            class="pl-2 pt-2 pb-0"
-                            style="line-height: 1"
-                          >
-                            {{ history.userId.channelName
-                            }}<v-icon>mdi-circle-small</v-icon
+                          <v-card-subtitle class="pl-2 pt-2 pb-0" style="line-height: 1">
+                            {{ history.userId.channelName }}<v-icon>mdi-circle-small</v-icon
                             >{{ history.videoId.views }} views
                           </v-card-subtitle>
                           <v-card-subtitle class="pl-2 pt-2 pb-0">
@@ -70,15 +46,9 @@
                   </v-card>
                 </v-skeleton-loader>
               </div>
-              <InfiniteLoading
-                :identifier="infiniteId"
-                @infinite="getHistories"
-              >
+              <InfiniteLoading :identifier="infiniteId" @infinite="getHistories">
                 <div slot="spinner">
-                  <v-progress-circular
-                    indeterminate
-                    color="red"
-                  ></v-progress-circular>
+                  <v-progress-circular indeterminate color="red"></v-progress-circular>
                 </div>
                 <div slot="no-results"></div>
                 <span slot="no-more"></span>
@@ -87,10 +57,7 @@
                     <v-row align="center">
                       <v-col class="grow">
                         <div class="title">Error!</div>
-                        <div>
-                          Something went wrong, but don’t fret — let’s give it
-                          another shot.
-                        </div>
+                        <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
                       </v-col>
                       <v-col class="shrink">
                         <v-btn @click="trigger">Take action</v-btn>
@@ -107,45 +74,25 @@
             </template>
             <div>
               <div v-for="(history, i) in loading ? 12 : histories" :key="i">
-                <v-skeleton-loader
-                  class="mx-auto"
-                  type="list-item-two-line"
-                  :loading="loading"
-                  tile
-                  large
-                >
+                <v-skeleton-loader class="mx-auto" type="list-item-two-line" :loading="loading" tile large>
                   <v-card class="card d-flex pl-0" flat>
                     <v-card-text class="pl-0 py-0">
-                      <v-card-title
-                        class="pl-0 black--text text--lighten-5 subtitle-1 font-weight-medium"
-                        >{{ history.searchText }}</v-card-title
-                      >
-                      <v-card-subtitle class="pl-0 pb-0">{{
-                        dateFormatter(history.createdAt)
-                      }}</v-card-subtitle>
+                      <v-card-title class="pl-0 black--text text--lighten-5 subtitle-1 font-weight-medium">{{
+                        history.searchText
+                      }}</v-card-title>
+                      <v-card-subtitle class="pl-0 pb-0">{{ dateFormatter(history.createdAt) }}</v-card-subtitle>
                     </v-card-text>
                     <v-card-actions
-                      ><v-btn
-                        text
-                        class="grey--text"
-                        fab
-                        @click="deleteHistory(history._id)"
-                      >
+                      ><v-btn text class="grey--text" fab @click="deleteHistory(history._id)">
                         <v-icon>mdi-close</v-icon>
                       </v-btn></v-card-actions
                     >
                   </v-card>
                 </v-skeleton-loader>
               </div>
-              <InfiniteLoading
-                :identifier="infiniteId"
-                @infinite="getHistories"
-              >
+              <InfiniteLoading :identifier="infiniteId" @infinite="getHistories">
                 <div slot="spinner">
-                  <v-progress-circular
-                    indeterminate
-                    color="red"
-                  ></v-progress-circular>
+                  <v-progress-circular indeterminate color="red"></v-progress-circular>
                 </div>
                 <div slot="no-results"></div>
                 <span slot="no-more"></span>
@@ -154,10 +101,7 @@
                     <v-row align="center">
                       <v-col class="grow">
                         <div class="title">Error!</div>
-                        <div>
-                          Something went wrong, but don’t fret — let’s give it
-                          another shot.
-                        </div>
+                        <div>Something went wrong, but don’t fret — let’s give it another shot.</div>
                       </v-col>
                       <v-col class="shrink">
                         <v-btn @click="trigger">Take action</v-btn>
@@ -185,23 +129,14 @@
             },
           ]"
         >
-          <v-card
-            id="card-radiobox"
-            flat
-            class="fill-height grey lighten-4 pa-10"
-          >
+          <v-card id="card-radiobox" flat class="fill-height grey lighten-4 pa-10">
             <v-radio-group v-model="historyType">
               <p class="title font-weight-regular pl-5 mb-2">History Type</p>
               <v-list class="grey lighten-4">
                 <v-list-item-group>
                   <template v-for="(item, i) in items">
                     <v-divider :key="i"></v-divider>
-                    <v-list-item
-                      :key="`item-${i}`"
-                      active-class="grey lighten-4"
-                      class="py-2"
-                      @click="clickItem(item)"
-                    >
+                    <v-list-item :key="`item-${i}`" active-class="grey lighten-4" class="py-2" @click="clickItem(item)">
                       <v-list-item-content>
                         <v-list-item-title v-text="item"></v-list-item-title>
                       </v-list-item-content>
@@ -214,9 +149,7 @@
                 </v-list-item-group>
               </v-list>
               <div>
-                <v-btn text :loading="clearLoading" @click="clearHistory"
-                  >Clear all {{ historyType }}</v-btn
-                >
+                <v-btn text :loading="clearLoading" @click="clearHistory">Clear all {{ historyType }}</v-btn>
                 <!-- <v-btn text>Pause {{ historyType }}</v-btn>
                 <v-btn text>Manage all activity</v-btn> -->
               </div>
@@ -242,6 +175,10 @@
   import InfiniteLoading from 'vue-infinite-loading'
 
   export default {
+    name: 'History',
+    components: {
+      InfiniteLoading,
+    },
     data: () => ({
       loading: false,
       loaded: false,
@@ -308,9 +245,7 @@
             console.log(err)
           })
           .finally(() => {
-            this.histories = this.histories.filter(
-              (history) => history.type !== type
-            )
+            this.histories = this.histories.filter((history) => history.type !== type)
 
             this.clearLoading = false
             this.deleteMessage = `${this.historyType} Cleared Successfully`
@@ -318,9 +253,7 @@
           })
       },
       async deleteHistory(id) {
-        this.histories = this.histories.filter(
-          (history) => history._id.toString() !== id.toString()
-        )
+        this.histories = this.histories.filter((history) => history._id.toString() !== id.toString())
         await HistoryService.deleteById(id)
           .catch((err) => {
             console.log(err)
@@ -339,9 +272,6 @@
       dateFormatter(date) {
         return moment(date).fromNow()
       },
-    },
-    components: {
-      InfiniteLoading,
     },
   }
 </script>

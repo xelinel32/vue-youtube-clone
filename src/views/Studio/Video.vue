@@ -31,22 +31,14 @@
               loading-text="Loading... Please wait"
             >
               <template v-slot:item.feelings="{ item }">
-                <span class="mr-3"
-                  ><v-icon small class="pr-1">mdi-thumb-up</v-icon
-                  >{{ item.likes }}</span
-                >
-                <span
-                  ><v-icon small class="pr-1">mdi-thumb-down</v-icon
-                  >{{ item.dislikes }}</span
-                >
+                <span class="mr-3"><v-icon small class="pr-1">mdi-thumb-up</v-icon>{{ item.likes }}</span>
+                <span><v-icon small class="pr-1">mdi-thumb-down</v-icon>{{ item.dislikes }}</span>
               </template>
               <template v-slot:top>
                 <v-dialog v-model="dialogDelete" persistent max-width="500px">
                   <v-card>
                     <v-card-title>
-                      <span class="headline"
-                        >Permanently delete this video?</span
-                      >
+                      <span class="headline">Permanently delete this video?</span>
                     </v-card-title>
 
                     <v-card-text>
@@ -62,17 +54,11 @@
                             </v-col>
                             <v-col>
                               <div class="ml-2">
-                                <v-card-title
-                                  class="pl-2 subtitle-1 font-weight-bold"
-                                  style="line-height: 1"
-                                >
+                                <v-card-title class="pl-2 subtitle-1 font-weight-bold" style="line-height: 1">
                                   {{ itemToDelete.title }}
                                 </v-card-title>
 
-                                <v-card-subtitle
-                                  class="pl-2 pt-2 pb-0"
-                                  style="line-height: 1"
-                                >
+                                <v-card-subtitle class="pl-2 pt-2 pb-0" style="line-height: 1">
                                   Published
                                   {{ dateFormatter(itemToDelete.createdAt) }}
                                   <br />
@@ -87,18 +73,9 @@
 
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="dialogDelete = !dialogDelete"
-                        >Cancel</v-btn
-                      >
+                      <v-btn color="blue darken-1" text @click="dialogDelete = !dialogDelete">Cancel</v-btn>
 
-                      <v-btn
-                        :loading="deleteBtnLoading"
-                        color="blue darken-1"
-                        text
-                        @click="deleteItem"
+                      <v-btn :loading="deleteBtnLoading" color="blue darken-1" text @click="deleteItem"
                         >Delete Forever</v-btn
                       >
                     </v-card-actions>
@@ -109,14 +86,7 @@
                 <v-btn icon href text class="mr-2">
                   <v-icon @click="editItem(item)"> mdi-pencil </v-icon>
                 </v-btn>
-                <v-btn
-                  icon
-                  href
-                  text
-                  class="mr-2"
-                  router
-                  :to="`/watch/${item._id}`"
-                >
+                <v-btn icon href text class="mr-2" router :to="`/watch/${item._id}`">
                   <v-icon> mdi-youtube </v-icon>
                 </v-btn>
                 <v-btn icon text @click.stop="deleteBtn(item)">
@@ -196,9 +166,7 @@
         await VideoService.deleteById(this.itemToDelete._id)
           .catch((err) => console.log(err))
           .finally(() => {
-            this.videos = this.videos.filter(
-              (video) => this.itemToDelete.id !== video.id
-            )
+            this.videos = this.videos.filter((video) => this.itemToDelete.id !== video.id)
             this.deleteBtnLoading = false
             this.dialogDelete = false
             this.itemToDelete = {}

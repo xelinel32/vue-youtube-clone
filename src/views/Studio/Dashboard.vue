@@ -6,11 +6,7 @@
         <div class="right">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn
-                class="mr-4 white"
-                icon
-                @click="dialog = true"
-                v-on="{ ...tooltip }"
+              <v-btn class="mr-4 white" icon @click="dialog = true" v-on="{ ...tooltip }"
                 ><v-icon size="25" class="small">mdi-upload</v-icon></v-btn
               >
             </template>
@@ -24,19 +20,14 @@
             <v-card-title class="pl-5">Recent subscribers</v-card-title>
 
             <v-card-actions class="d-block ml-2">
-              <v-btn color="blue" text @click="subscribersDialog = true">
-                See all
-              </v-btn>
+              <v-btn color="blue" text @click="subscribersDialog = true"> See all </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
     <UploadVideoModal :open-dialog="dialog" @closeDialog="dialog = false" />
-    <SubscribersModal
-      :open-dialog="subscribersDialog"
-      @closeDialog="subscribersDialog = false"
-    />
+    <SubscribersModal :open-dialog="subscribersDialog" @closeDialog="subscribersDialog = false" />
   </div>
 </template>
 

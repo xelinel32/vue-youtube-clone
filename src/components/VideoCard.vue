@@ -1,12 +1,5 @@
 <template>
-  <v-card
-    class="content-bg card mx-auto"
-    :max-width="card.maxWidth"
-    flat
-    tile
-    router
-    :to="`/watch/${video._id}`"
-  >
+  <v-card class="content-bg card mx-auto" :max-width="card.maxWidth" flat tile router :to="`/watch/${video._id}`">
     <v-img :src="`${url}/uploads/thumbnails/${video.thumbnailUrl}`"></v-img>
     <v-row no-gutters>
       <v-col v-if="card.type != 'noAvatar'" cols="2">
@@ -18,18 +11,13 @@
               :src="`${url}/uploads/avatars/${channel.photoUrl}`"
             ></v-img>
             <v-avatar v-else color="red">
-              <span class="white--text headline">
-                {{ channel.channelName.split('')[0].toUpperCase() }}</span
-              >
+              <span class="white--text headline"> {{ channel.channelName.split('')[0].toUpperCase() }}</span>
             </v-avatar>
           </v-list-item-avatar>
         </v-list-item>
       </v-col>
       <v-col>
-        <v-card-title
-          class="pl-2 pt-3 subtitle-1 font-weight-bold"
-          style="line-height: 1.2rem"
-        >
+        <v-card-title class="pl-2 pt-3 subtitle-1 font-weight-bold" style="line-height: 1.2rem">
           {{ video.title }}
         </v-card-title>
 
@@ -37,8 +25,7 @@
           {{ channel.name }}
         </v-card-subtitle>
         <v-card-subtitle class="pl-2 pt-0">
-          {{ video.views }} views<v-icon>mdi-circle-small</v-icon
-          >{{ dateFormatter(video.createdAt) }}
+          {{ video.views }} views<v-icon>mdi-circle-small</v-icon>{{ dateFormatter(video.createdAt) }}
         </v-card-subtitle>
       </v-col>
     </v-row>
@@ -58,7 +45,10 @@
         type: Object,
         required: true,
       },
-      card: Object,
+      card: {
+        type: Object,
+        default: () => {},
+      },
     },
     data() {
       return {
